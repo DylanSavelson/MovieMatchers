@@ -48,31 +48,31 @@ User Stories:
 
 
 **Images**
-![real login](https://hackmd.io/_uploads/SyL7GznZ0.png)<br/>
+![real login](https://ibb.co/hYK6ydz)<br/>
 The login view is the initial screen where users can enter their credentials to log into their account. It typically consists of a form with input fields for the username/email and password, along with a “Login” button. The login view should also include a link to the registration page for new users who don’t have an account yet.
 
 
 ---
 
-![userprofile](https://hackmd.io/_uploads/SkIXfMhWR.png)<br/>
+![userprofile](https://ibb.co/rQqPjry)<br/>
 The user profile shows the user’s profile picture if set, and gives them a place where they can update their email, password profile picture and if their profile is public or private. Here is also where they can control if the site is displayed in light or dark mode depending on the value of the toggle switch.
 
 ---
 
-![movie page](https://hackmd.io/_uploads/By8XMz3ZC.png)<br/>
+![movie page](https://ibb.co/wc1VQyc)<br/>
 The movie page shows a certain movie that user clicked on. The user can toggle if they've watched it or not, give a rating and edit a rating they gave. It also shows the rotten tomatoes, genres, release date, duration, director, main actors, cover and a description of the movie. It will also have a button to add to to watch.
 
 ---
 
-![to watch](https://hackmd.io/_uploads/SkUmGMn-0.png)<br/>
+![to watch](https://ibb.co/BjNPvhB)<br/>
 The to watch page shows content user has added to the to watch via recommended content page. It will show the cover and name of each movie and the user can click on the cover or the edit button to go to the movie page for more info or to edit the watched status or rating.
 
 ---
 
-![watched content](https://hackmd.io/_uploads/SylIXMMnZA.png)<br/>
+![watched content](https://ibb.co/TqzGrxw)<br/>
 The watched content page if for users who want to see what they have watched and what they rated it so that they can recommend stuff to firends, the user can also edit the rating they gave it by clicking on the cover.
 
 ---
 
-![recommended](https://hackmd.io/_uploads/S1ImzznZR.png)<br/>
+![recommended](https://ibb.co/fY15v9r)<br/>
 The recommended content page will show users movies that our algorithm or api thinks they would like. The user can scroll through and see the match % of each movie the cover and title. There will also be a button that the user can click to add it to their to watch page. There will be a notification that the movie was added.
