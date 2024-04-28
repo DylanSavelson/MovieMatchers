@@ -1,188 +1,78 @@
-Your [project](https://vikramsinghmtl.github.io/420-4W6-Web-Programming-II/project/specifications) proposal will go here. Since you have to write your proposal in markdown, I've provided the sample proposal below so you have a reference for the syntax. Don't worry about getting rid of my stuff below since there's the live [sample proposal](https://vikramsinghmtl.github.io/420-4W6-Web-Programming-II/project/example-proposal) copy on the notes website.
+**Introduction**
+Introducing “Movie Matcher” - an application where you can track movies or tv shows you’ve watched, rate them after watching and we will recommend other movies/shows based on what you have watched. You can also connect with other people who have similar taste in movies.
+
+This app is for:
+* People who are interested in remembering and rating what movies/shows they’ve watched.
+* Individuals who want to connect with others who happen to have similar taste in consuming entertainment media.
+* Avid movie watchers who want more movie/tv show recommendations based on previous viewings and ratings.
+
+People are always looking to consume more content, it’s addictive. The issue is nobody ever knows what to watch! Look no further as Movie Matcher is here to bridge the gap, providing the simplistic solution to this specific problem.
+
+
+**Core Functionality**
+* **Movie/tv tracking:** Users can search for movies/tv using the api and give them a rating.
+* **User Connecting:** Users have the option to make their profile public to:
+    * Allow for other users to connect with them via email (given if the profile is public).
+    * Have account interests shown to other users ex: favorite genres, etc.
+    * See others accounts and decide if they would want to reach out.
+* **Movie/tv management:** Users can add to a list of content they want to watch
+    * They can set the movie/tv show to watched once it’s viewed.
+    * They can add a rating.
+    * They can remove it from the list if they don’t want to watch it anymore
+* **Recommendations:** Users will be recommended new content based on watched:
+    * We will either have an api or small algorithm that finds similar movies/tv.
+    * The user can add movie/tv to the list of to be watched.
+    * The user can deny adding the movie/tv to watch based on stats.
+
+
+**Requirements**
+User Stories:
+* **As a user**, I want to add movies I have watched to my list so I can keep track of what I have watched.
+* **As a user**, I want to see a catalog of movies on a home screen,so that I can see what is new.
+* **As a user**, I want to be able to sort my movies by genre, type (Tv, Movie), etc ,so that I can see the movie types that interest me more.
+* **As a user**, I want to have a watchlist ,so that I can have a list of what movies are on my backlog. 
+* **As a user**, I want to give a score to the movies I have watched ,so that I can have feedback on what my preferences and my recommendations might be.
+* **As a user**, I want to be able to edit my watchlist,so that I can make sure movies I am no longer interested in aren’t there anymore. 
+* **As a user**, I want to be able to seamlessly make a movie in my watchlist be added to my watched movies list, so that I can have my lists up to date. 
+* **As a user,** I want to be able to edit my ratings of watched movies, so that I can accurately show my ratings if I rewatch something.
+* **As a user**, I want to be able to register an account, so that I can keep track of the movies I have watched and want to watch.
+* **As a user**, I want to log into my account, so that I can access my movie lists.
+* **As a user**, I want to log out of my account, so that I can securely end my session.
+* **As a user**, I want to be able to connect with other people based on movie ratings,so that I can have new friends to watch movies/tv with.
+* **As a user**, I want to be able to hide my watched movies and movie ratings, so that I can stay private because I only want to track my own stuff.  
+
+**API Routes**
+| Request | Action | Response | Description |
+| -------- | -------- | -------- | -------- |
+| POST /content     | ContentController::addContent     | 200 /content/:id  | Add a movie to the database that the user searched for through the API|
+
+
+**Images**
+![real login](https://hackmd.io/_uploads/SyL7GznZ0.png)<br/>
+The login view is the initial screen where users can enter their credentials to log into their account. It typically consists of a form with input fields for the username/email and password, along with a “Login” button. The login view should also include a link to the registration page for new users who don’t have an account yet.
+
 
 ---
 
-![Banner](images/collab.png)
+![userprofile](https://hackmd.io/_uploads/SkIXfMhWR.png)<br/>
+The user profile shows the user’s profile picture if set, and gives them a place where they can update their email, password profile picture and if their profile is public or private. Here is also where they can control if the site is displayed in light or dark mode depending on the value of the toggle switch.
 
-Introducing "Taskr" – a collaborative task management platform where teams, families, or study groups can manage shared projects and hold each other accountable. This app is for:
+---
 
--   Small teams and project groups needing a lightweight way to coordinate tasks.
--   Households or roommates looking to organize shared chores and responsibilities.
--   Students working on group assignments.
+![movie page](https://hackmd.io/_uploads/By8XMz3ZC.png)<br/>
+The movie page shows a certain movie that user clicked on. The user can toggle if they've watched it or not, give a rating and edit a rating they gave. It also shows the rotten tomatoes, genres, release date, duration, director, main actors, cover and a description of the movie. It will also have a button to add to to watch.
 
-Many existing task managers are overly complex for small-scale collaboration or lack features to foster a sense of shared ownership. Taskr aims to bridge the gap, providing the right balance of structure and simplicity for coordination.
+---
 
-## 🧱 Core Functionality
+![to watch](https://hackmd.io/_uploads/SkUmGMn-0.png)<br/>
+The to watch page shows content user has added to the to watch via recommended content page. It will show the cover and name of each movie and the user can click on the cover or the edit button to go to the movie page for more info or to edit the watched status or rating.
 
--   **Project Creation:** Users can create new shared projects with a title and basic description.
--   **User Management:** Users can join existing projects using a unique project code.
--   **Task Management:** Within a project, users can:
-    -   Create new tasks with descriptions and due dates.
-    -   Assign tasks to specific project members.
-    -   Mark tasks as completed.
--   **Basic Notifications:** Users receive notifications when assigned a task or when a task they're involved in is marked complete.
--   **In-Task Chat:** Simple comment threads attached to tasks for focused discussions.
--   **Custom Task Statuses:** Ability to define statuses beyond "Not Started" and "Completed" (e.g., "In Progress", "Blocked")
+---
 
-### Requirements
+![watched content](https://hackmd.io/_uploads/SylIXMMnZA.png)<br/>
+The watched content page if for users who want to see what they have watched and what they rated it so that they can recommend stuff to firends, the user can also edit the rating they gave it by clicking on the cover.
 
-#### Task Stories
+---
 
--   As a user, I want to create a task so that I can keep track of what I have to get done.
--   As a user, I want to view my tasks in a list so I can see what needs my attention.
--   As a user, I want to edit a task to update its details or due date.
--   As a user, I want to mark a task as complete so I can track my progress.
--   As a user, I want to delete a task when it's no longer relevant.
-
-#### Project Stories
-
--   As a user, I want to create a new project so I can organize a set of related tasks.
--   As a user, I want to join a project using an invite code so I can collaborate with others.
--   As a user, I want to view all projects I'm part of to easily switch between them.
-
-#### User Management Stories
-
--   As a user, I want to register for an account so I can start using the app.
--   As a user, I want to log in to my account to access my tasks and projects.
--   As a user, I want to log out of my account to securely end my session.
-
-#### Comment Stories
-
--   As a user, I want to leave a comment on a task to ask for clarification or provide an update.
--   As a user, I want to see comments from other team members on a task to stay on the same page.
--   As a user, I want to be notified if there's a new comment on a task I'm involved with.
-
-#### Status Stories
-
--   As a user, I want to mark a task as "In Progress" to signal that I'm actively working on it.
--   As a user, I want to mark a task as "Blocked" to indicate that I can't proceed due to a dependency.
--   As a user, I want to view tasks grouped by their status to get a quick overview of the project's health.
-
-## ᛦ Entity Relationships
-
->[!note]
-> If you view the source code for this README file, you'll see the Mermaid syntax that generated the following diagram. You can copy the code into the [live Mermaid editor](https://mermaid.live) to play around and make changes specific to your app.
-
-```mermaid
-erDiagram
-    PROJECT ||--o{ TASK : contains
-    PROJECT ||--o{ USER_PROJECT : "is managed by"
-    USER |o--o{ TASK : "assigned to"
-    USER ||--o{ USER_PROJECT : "works on"
-    TASK ||--o{ SUBTASK : has
-    TASK ||--o{ NOTIFICATION: emits
-    TASK ||--o{ COMMENT: has
-    USER ||--o{ COMMENT: writes
-    NOTIFICATION ||--o{ USER_NOTIFICATION: pings
-    USER ||--o{ USER_NOTIFICATION: receives
-
-    USER_PROJECT {
-        int user_id PK, FK
-        int project_id PK, FK
-    }
-
-    TASK {
-        int id PK
-        string title
-        string description
-        enum status "complete | in progress | unassigned | blocked"
-        date created_at
-        date edited_at
-        int project_id FK
-        int assignee FK
-    }
-
-    SUBTASK {
-        int id PK
-        string title
-        date created_at
-        date edited_at
-        int task_id FK
-    }
-
-    PROJECT {
-        int id PK
-        string title
-        string description
-        date created_at
-        date edited_at
-    }
-
-    USER {
-        int id PK
-        string email
-        string name
-        date created_at
-        date edited_at
-    }
-
-    COMMENT {
-        int id PK
-        string content
-        date created_at
-        date edited_at
-        id user_id FK "comment author"
-        id task_id FK
-    }
-
-    NOTIFICATION {
-        int id PK
-        string content
-        date created_at
-        id task_id FK
-    }
-
-    USER_NOTIFICATION {
-        int user_id PK, FK
-        int notification_id PK, FK
-    }
-```
-
--   **Authentication System:** Handling user registration, login, logout, and session management.
--   **Project Management:** Logic for project creation, joining projects, and CRUD operations on projects.
--   **Task Management:** Logic for task creation, assignment, updates, filtering, and notifications.
--   **UI Elements:** Design of forms, task lists, project overview, notification lists.
-
-## 📍 API Routes
-
->[!note]
-> These are only a few routes to give you an idea, these would definitely not be all the routes for this kind of app!
-
-### Project Management
-
-| Request              | Action                           | Response              | Description                                                             |
-| -------------------- | -------------------------------- | --------------------- | ----------------------------------------------------------------------- |
-| POST /projects       | ProjectController::createProject | 201 /projects/:id     | Create a new project and redirect to the project's view                 |
-| GET /projects/:id    | ProjectController::getProject    | 200 ProjectDetailView | Retrieve details of a specific project                                  |
-| PUT /projects/:id    | ProjectController::updateProject | 200 ProjectDetailView | Update an existing project's information                                |
-| DELETE /projects/:id | ProjectController::deleteProject | 204 (No Content)      | Delete a project (consider implications – should tasks be deleted too?) |
-
-### Task Management
-
-| Request                                   | Action                     | Response                 | Description                        |
-| ----------------------------------------- | -------------------------- | ------------------------ | ---------------------------------- |
-| POST /projects/:projectId/tasks           | TaskController::createTask | 201 /projects/:projectId | Create a new task within a project |
-| GET /projects/:projectId/tasks/:taskId    | TaskController::getTask    | 200 TaskDetailView       | Retrieve a specific task's details |
-| PUT /projects/:projectId/tasks/:taskId    | TaskController::updateTask | 200 TaskDetailView       | Edit an existing task              |
-| DELETE /projects/:projectId/tasks/:taskId | TaskController::deleteTask | 204 (No Content)         | Delete a task                      |
-
-## 📐 Wireframes
-
->[!note]
-> Don't go crazy detailed with the wireframes! These should be minimal sketches to convey to the customer what the app will roughly look like. These things tend to change over time as requirements evolve, but you need to start from somewhere.
-
-![Login View](images/login-view.png)
-
-The login view is the initial screen where users can enter their credentials to log into their account. It typically consists of a form with input fields for the username/email and password, along with a "Login" button. The login view should also include a link to the registration page for new users who don't have an account yet.
-
-![List View](images/list-view.png)
-
-All the tasks for the logged in user where they can sort by title, due date, and created date. They can also filter tasks to only see completed or uncompleted tasks. The user can check off tasks here, or if they want a more detailed view, can click on one of the tasks (see next view).
-
-![Show View](images/show-view.png)
-
-This view shows the user more details for one specific task. If a due date was set, it will tell them how many days from now the task is due. There is a description field to provide more context for the task, as well as task actions to mark the task as complete, edit the task, or delete. On the right we have a sub-task list so that the user can breakdown the task steps even further. The sub-tasks can be checked off when completed.
-
-![Profile View](images/profile-view.png)
-
-The user profile shows the user's profile picture if set, and gives them a place where they can update their email and password. Here is also where they can control if the site is displayed in light or dark mode depending on the value of the toggle switch.
+![recommended](https://hackmd.io/_uploads/S1ImzznZR.png)<br/>
+The recommended content page will show users movies that our algorithm or api thinks they would like. The user can scroll through and see the match % of each movie the cover and title. There will also be a button that the user can click to add it to their to watch page. There will be a notification that the movie was added.
