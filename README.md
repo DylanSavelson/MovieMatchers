@@ -47,7 +47,7 @@ User Stories:<br/>
 | POST /content     | ContentController::addContent     | 200 /content/:id  | Add a movie to the database that the user searched for through the API|
 
 
-**Images**<br/>
+**Images**<br/><br/>
 ![real login](https://ibb.co/hYK6ydz)<br/>
 The login view is the initial screen where users can enter their credentials to log into their account. It typically consists of a form with input fields for the username/email and password, along with a “Login” button. The login view should also include a link to the registration page for new users who don’t have an account yet.
 
