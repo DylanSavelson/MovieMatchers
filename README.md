@@ -1,7 +1,7 @@
-**Introduction**
+**Introduction** <br/>
 Introducing “Movie Matcher” - an application where you can track movies or tv shows you’ve watched, rate them after watching and we will recommend other movies/shows based on what you have watched. You can also connect with other people who have similar taste in movies.
 
-This app is for:
+This app is for:<br/>
 * People who are interested in remembering and rating what movies/shows they’ve watched.
 * Individuals who want to connect with others who happen to have similar taste in consuming entertainment media.
 * Avid movie watchers who want more movie/tv show recommendations based on previous viewings and ratings.
@@ -9,7 +9,7 @@ This app is for:
 People are always looking to consume more content, it’s addictive. The issue is nobody ever knows what to watch! Look no further as Movie Matcher is here to bridge the gap, providing the simplistic solution to this specific problem.
 
 
-**Core Functionality**
+**Core Functionality**<br/>
 * **Movie/tv tracking:** Users can search for movies/tv using the api and give them a rating.
 * **User Connecting:** Users have the option to make their profile public to:
     * Allow for other users to connect with them via email (given if the profile is public).
@@ -25,8 +25,8 @@ People are always looking to consume more content, it’s addictive. The issue i
     * The user can deny adding the movie/tv to watch based on stats.
 
 
-**Requirements**
-User Stories:
+**Requirements**<br/>
+User Stories:<br/>
 * **As a user**, I want to add movies I have watched to my list so I can keep track of what I have watched.
 * **As a user**, I want to see a catalog of movies on a home screen,so that I can see what is new.
 * **As a user**, I want to be able to sort my movies by genre, type (Tv, Movie), etc ,so that I can see the movie types that interest me more.
@@ -41,13 +41,13 @@ User Stories:
 * **As a user**, I want to be able to connect with other people based on movie ratings,so that I can have new friends to watch movies/tv with.
 * **As a user**, I want to be able to hide my watched movies and movie ratings, so that I can stay private because I only want to track my own stuff.  
 
-**API Routes**
+**API Routes**<br/>
 | Request | Action | Response | Description |
 | -------- | -------- | -------- | -------- |
 | POST /content     | ContentController::addContent     | 200 /content/:id  | Add a movie to the database that the user searched for through the API|
 
 
-**Images**
+**Images**<br/>
 ![real login](https://ibb.co/hYK6ydz)<br/>
 The login view is the initial screen where users can enter their credentials to log into their account. It typically consists of a form with input fields for the username/email and password, along with a “Login” button. The login view should also include a link to the registration page for new users who don’t have an account yet.
 
