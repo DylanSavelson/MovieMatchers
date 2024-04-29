@@ -44,7 +44,26 @@ User Stories:<br/>
 **API Routes**<br/>
 | Request | Action | Response | Description |
 | -------- | -------- | -------- | -------- |
-| POST /content     | ContentController::addContent     | 200 /content/:id  | Add a movie to the database that the user searched for through the API|
+| POST /content     | ContentController::addContent     | 200 /content/:id     | Add a movie to the database that the user searched for through the API|
+| GET /content      | ContentController::getContentList |200 ContentCatalogView| Show the content that the database already has available to select from. |
+| GET /watched_content  | UserController:getWatchedList |200 WatchedView    | Show the watched list of the user                            |
+|GET /to_watch_content|UserController::getToWatchList |200 ToWatchVIew |Show the to watch list of the user                           |
+|GET /watched_content | UserController::getToWatchList    |404 ErrorView |Displays error if user tries to view someone else’s profile who is private.  |
+|GET /to_watch_content |UserController::getWatchedList  |404 ErrorView | Displays error if user tries to view someone else’s profile who is private. |
+|POST /register |UserController::register|201 /login|Creates a user profile|
+|POST /watched_content|UserController::addContentWatchedList|200 /user/:id/watched_content| Adds content to the watched list of the user |
+|GET /add_watched_content|UserController::getAddWatchedContentForm|200 NewWatchedContentFormView|Gets a form to add watched content and give a rating|
+|POST /to_watch_content|UserController::addContentToWatchList|200 /user/:id/to_watch_content|Adds content to the to watch list of the user|
+|GET /add_to_watc_content|UserController::getAddToWatchContentForm|200 NewToWatchContentFormView|Gets a form to add to watch content.|
+|GET /login|UserController::getLoginForm|200 LoginFormView|Shows the login form|
+|POST /login/:id|UserController::login|200 /user/:id/add_watched_content|Once user is logged in they are sent to add watched content|
+|GET /register|UserController::getRegisterForm|200 RegisterFormView|Shows the register form views|
+|GET /content/:id|ContentController::getContent|200 ContentView|Shows details about specific content |
+|GET /content/:id|ContentController::getContent|404 ErrorView|Displays an error if the content does not exist|
+|GET /profile|UserController::getProfile|200 UserProfileView|Gets the profile of the user. Hides most information if the user wants their account private.|
+|GET /profile|UserController::getProfile|404 ErrorView|Displays an error if the user does not exist |
+|GET /recommended_content|UserController::getRecommendedContent |200 RecommendedContentView |Displays the list of recommended content of the user|
+|PUT /recommended_content|UserController::getRecommendedContent|400 ErrorView|Displays an error because users cannot edit their recommended list|
 
 
 **Images**<br/><br/>
