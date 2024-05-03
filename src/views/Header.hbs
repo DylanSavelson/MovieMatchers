@@ -8,11 +8,17 @@
 	<title>{{ title }}</title>
 </head>
 
-<body>
+<body class="main bg">
 	<header>
-		<nav>
-			<ul>
-				<li><a href="{{ path '' }}">Home</a></li>
+		<nav class="navBox">
+			<ul class="navLogo">
+				<li><a class="navLink" href="{{ path '' }}"><img src="../../favicon.ico" height="50vh" width="50vw"/></a></li>
+			</ul>
+			<ul class="navOptions">
+				<li><a class="navLink" href="{{ path '' }}">Login</a></li>
+				<li><a class="navLink" href="{{ path '' }}">Register</a></li>
+				<li><a class="navLink" href="{{ path '' }}">Watched</a></li>
+				<li><a class="navLink" href="{{ path '' }}">To Watch</a></li>
 			</ul>
 		</nav>
 	</header>

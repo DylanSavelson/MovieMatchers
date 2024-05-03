@@ -1,0 +1,86 @@
+@font-face {
+    font-family: 'Adlinnaka';
+    src: url('../Adlinnaka-BoldDemo.ttf');
+  }
+
+.bg{
+    background-image:linear-gradient(to right, #323232, #5f5f5f) ;
+}
+
+.main{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+}
+
+.title {
+    font-family: 'Adlinnaka';
+    font-size: 600%;
+    background-image: radial-gradient(circle farthest-corner at center center, #F1E696 0%, #926129 100%);
+    background-size: 100%;
+    background-repeat: repeat;
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    padding-top: 1vh;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.slogan{
+    font-family: 'Adlinnaka';
+    font-size: 50%;
+    background-image: radial-gradient(circle farthest-corner at center center, #F1E696 0%, #926129 100%);
+    background-size: 100%;
+    background-repeat: repeat;
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    padding-top: 1vh;
+    margin-top: 0;
+    letter-spacing: 1vw;
+}
+
+header {
+    padding: 3vh;
+    width: 100%;
+}
+
+.navLink {
+    text-decoration: none;
+    font-family: 'Adlinnaka';
+    font-size: 90%;
+    background-image: radial-gradient(circle farthest-corner at center center, #F1E696 0%, #926129 100%);
+    background-size: 100%;
+    background-repeat: repeat;
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.navLogo {
+    margin-left: 5.5vw;
+}
+
+.navOptions {
+    display:flex;
+    align-items: center;
+    gap: 8vw;
+    justify-content: space-evenly;
+    margin-right: 10vw;
+}
+
+.navBox {
+    display: flex;
+    justify-content: space-between;
+}
+  
