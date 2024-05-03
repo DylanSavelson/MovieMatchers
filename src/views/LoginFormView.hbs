@@ -1,0 +1,21 @@
+{{> Header }}
+
+<h1 class="title" >Login</h1>
+
+
+<form method="POST" action="{{ path 'login' }}" id="login-form">
+    <h3 id="error">{{error}}</h3>
+    <label for="email">email:</label>
+    <input placeholder="youremail@gmail.com" type="email" type="text" value="{{rememberedEmail}}" name="email">
+
+    <label for="password">password:</label>
+	<input type="password" name="password" placeholder="password"/>
+	
+
+    <input type="checkbox" id="remember" name="remember">
+    <label for="remember">Remember Me</label>
+
+    <input type="submit" value="Create" id="login-form-submit-button">
+</form>
+
+{{> Footer}}
