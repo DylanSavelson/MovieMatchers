@@ -1,0 +1,20 @@
+{{> Header }}
+
+<h1 class="title" >Create User</h1>
+
+
+<form method="POST" action="{{ path 'users' }}" id="register-form">
+    <h3 id="error">{{error}}</h3>
+    <label for="email">email:</label>
+    <input placeholder="youremail@gmail.com" type="email" type="text" name="email">
+
+    <label for="password">password:</label>
+	<input type="password" name="password" placeholder="password"/>
+	
+    <label for="confirm">confirm password:</label>
+	<input type="password" name="confirmPassword" placeholder="password"/>
+	
+    <input type="submit" value="Create" id="register-form-submit-button">
+</form>
+
+{{> Footer}}

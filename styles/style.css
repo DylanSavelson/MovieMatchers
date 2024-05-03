@@ -47,7 +47,8 @@
 
 header {
     padding: 3vh;
-    width: 100%;
+    padding-right: 0;
+    width: 90%;
 }
 
 .navLink {
@@ -84,3 +85,11 @@ ul {
     justify-content: space-between;
 }
   
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+  }
