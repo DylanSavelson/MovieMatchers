@@ -6,21 +6,21 @@
 <form class="main" method="POST" action="{{ path 'login' }}" id="login-form">
     <h3 class="title" style="font-size: 300%" id="error">{{error}}</h3>
     <div class="formItem">
-        <label class="loginText" for="email">Email:</label>
+        <label class="formText" for="email">Email:</label>
         <input class="inputBoxes" type="email" type="text" value="{{rememberedEmail}}" name="email">
     </div>
 
     <div class="formItem">
-        <label class="loginText" for="password">Password:</label>
+        <label class="formText" for="password">Password:</label>
         <input class="inputBoxes" type="password" name="password"/>
 	</div>
 
-    <div class="rememberMe">
-        <input  type="checkbox" id="remember" name="remember">
-        <label class="loginText" for="remember">Remember Me</label>
+    <div class="formCheckbox">
+        <input type="checkbox" id="remember" name="remember">
+        <label class="formText" for="remember">Remember Me</label>
     </div>
 
-    <input class="loginButton" type="submit" value="Login" id="login-form-submit-button">
+    <input class="formButton" type="submit" value="Login" id="login-form-submit-button">
 </form>
 
 {{> Footer}}

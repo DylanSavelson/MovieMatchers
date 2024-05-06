@@ -99,22 +99,18 @@ footer {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    align-items: left;
     margin-top: 2vh;
+    width: 100%;
 }
 
 .inputBoxes {
     width: 20rem;
     height: 5vh;
     border-radius: 0.4rem;
+    width: 100%;
 }
 
-.inputBoxes::placeholder{
-    font-family: 'Adlinnaka';
-    margin-top: 1vh;
-}
-
-.rememberMe {
+.formCheckbox {
     display: flex;
     align-items: center;
     margin-top: 2vh;
@@ -124,12 +120,12 @@ footer {
     
 }
 
-.rememberMe input[type="checkbox"] {
+.formCheckbox input[type="checkbox"] {
     width: 1.5rem;
     height: 1.5rem;
 }
 
-.loginText {
+.formText {
     font-family: 'Adlinnaka';
     background-image: radial-gradient(circle farthest-corner at center center, #F1E696 0%, #926129 100%);
     background-repeat: repeat;
@@ -138,7 +134,7 @@ footer {
     -webkit-text-fill-color: transparent;
 }
 
-.loginButton {
+.formButton {
     font-family: 'Adlinnaka';
     font-size: 1.5rem;
     width: 15rem;
@@ -152,6 +148,12 @@ footer {
     -webkit-text-fill-color: transparent;
 }
 
-.loginButton:hover {
+.formButton:hover {
     cursor: pointer
+}
+
+.editProfilePicture
+{
+    display:flex;
+    gap: 1rem;
 }

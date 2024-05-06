@@ -18,7 +18,7 @@
 				<li><a class="navLink" href="{{ path '' }}">Recommendations</a></li>
 
 				{{#if sessionCookie}}
-					<li><a class="navLink" href="{{ path '/watched/' }}{{ userId }}">Watched</a></li>
+					<li><a class="navLink" href="{{ path 'watched/' }}{{ userId }}">Watched</a></li>
 					<li><a class="navLink" href="{{ path '' }}">To Watch</a></li>
 					<li><a class="navLink" href="{{ path 'users/' }}{{ userId }}/edit">Profile</a></li>
 					<li><a class="navLink" href="{{ path 'logout' }}">Logout</a></li>
