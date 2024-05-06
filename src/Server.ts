@@ -48,12 +48,18 @@ export default class Server {
 		this.controller.registerRoutes(this.router);
 
 		this.router.get("/", (req: Request, res: Response) => {
+			const session = req.getSession();
+			res.setCookie( 
+				session.cookie
+			  );
 			res.send({
 				statusCode: StatusCode.OK,
 				message: "Homepage!",
 				template: "HomeView",
 				payload: {
 					title: "My App",
+					sessionCookie: session.get("userId") ? true : false,
+					userId: session.get("userId")
 				},
 			});
 		});
