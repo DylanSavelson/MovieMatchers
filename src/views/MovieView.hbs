@@ -1,0 +1,17 @@
+{{> Header }}
+
+{{#if searchMovie}}
+    <form class="main" method="POST" action="{{ path 'movie' }}" id="movie-form">
+        <div class="formItem">
+            <label class="title" style="font-size:300%" for="movie">Movie name</label>
+            <input class="inputBoxes" type="movie" name="movie"/>
+        </div>
+        <input class="formButton" type="submit" value="Search" id="movie-form-submit-button">
+    </form>
+{{else}}
+    <h1 class="title">insert movie name</h1>
+{{/if}}
+
+
+
+{{> Footer }}

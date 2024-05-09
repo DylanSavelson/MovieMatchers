@@ -13,6 +13,7 @@ import {
 	createUTCDate,
 	snakeToCamel,
 } from "../utils";
+import Movie from "../models/Movie";
 
 
 /**
@@ -29,6 +30,8 @@ export default class AuthController {
 	}
 
 	registerRoutes(router: Router) {
+		router.get("/movie", this.getMovieForm);
+		router.post("/movie", this.movie);
 		router.get("/register", this.getRegistrationForm);
 		router.get("/login", this.getLoginForm);
 		router.post("/login", this.login);
@@ -39,6 +42,24 @@ export default class AuthController {
 		router.post("/users/:id/edit", this.updateUserProfile)
 	}
 
+
+	getMovieForm = async (req: Request, res: Response) => 
+	{
+		const session = req.getSession();
+		res.setCookie( 
+			session.cookie
+		  );
+		await res.send({
+			statusCode: StatusCode.OK,
+			message: "Movie search form",
+			payload: {
+				searchMovie: true,
+				sessionCookie: session.get("userId") ? true : false,
+				userId: session.get("userId")
+			},
+			template: "MovieView",
+		});
+	}
 
 	getWatchedPage = async (req: Request, res: Response) => {
 		const session = req.getSession();
@@ -97,6 +118,11 @@ export default class AuthController {
 			template: "LoginFormView",
 		});
 	};
+
+	movie = async (req: Request, res: Response) => {
+		const new_movie = await Movie.read(this.sql, req.body.movie)
+	}
+
 
 	login = async (req: Request, res: Response) => {
 		const password = req.body.password
@@ -187,12 +213,12 @@ export default class AuthController {
 					userProps.profile = req.body.profile;
 				}
 
-				if (req.body.darkmode)
+				if (req.body.profileVisibility == "on" && req.findCookie("profile_visibility")?.value == "public")
 				{
 					res.setCookie(
 						new Cookie(
-							"theme",
-							"dark"
+							"profile_visibility",
+							"private"
 						)
 					)
 				}
@@ -200,8 +226,8 @@ export default class AuthController {
 				{
 					res.setCookie(
 						new Cookie(
-							"theme",
-							"light"
+							"profile_visibility",
+							"public"
 						)
 					)
 				}
@@ -245,21 +271,20 @@ export default class AuthController {
 		if(req.session.get("userId"))
 		{
 			const user = await User.read(this.sql, req.session.get("userId"));
-			let darkMode: string = "";
-			if (req.findCookie("theme")?.value === "dark")
+			let profileVisibilityMessage: string = "";
+			if (req.findCookie("profile_visibility")?.value === "public")
 			{
-				darkMode = "Dark mode enabled"	
+				profileVisibilityMessage = "Profile public"	
 			}
 			else 
 			{
-				darkMode = "Dark mode disabled"
+				profileVisibilityMessage = "Profile private"
 			}
 			await res.send({
 				statusCode: StatusCode.OK,
 				message: "User Profile",
 				payload: {
-					isDarkMode: req.findCookie("theme")?.value === "dark",
-					darkModeMessage: darkMode,
+					profileVisibility: profileVisibilityMessage,
 					message: req.getSearchParams().get("success") ?  "User updated successfully!" : "",
 					error: req.getSearchParams().get("failure") ?  "User with this email already exists" : "",
 					sessionCookie: session.get("userId") ? true : false,

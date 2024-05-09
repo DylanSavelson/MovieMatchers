@@ -11,7 +11,9 @@ CREATE TABLE movies (
   id SERIAL PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
   description TEXT NOT NULL,
-  status movie_status NOT NULL DEFAULT 'to_watch'
+  status movie_status NOT NULL DEFAULT 'to_watch',
+  user_id int NOT NULL
+  
   );
 
 

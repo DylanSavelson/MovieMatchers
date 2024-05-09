@@ -113,8 +113,8 @@ footer {
 .formCheckbox {
     display: flex;
     align-items: center;
+    justify-content: center;
     margin-top: 2vh;
-    margin-bottom: 5vh;
     width: 20.5rem;
     gap: 0.5rem
     
@@ -135,6 +135,7 @@ footer {
 }
 
 .formButton {
+    margin-top: 5vh;
     font-family: 'Adlinnaka';
     font-size: 1.5rem;
     width: 15rem;

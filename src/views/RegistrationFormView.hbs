@@ -3,18 +3,24 @@
 <h1 class="title" >Create User</h1>
 
 
-<form method="POST" action="{{ path 'users' }}" id="register-form">
-    <h3 id="error">{{error}}</h3>
-    <label for="email">email:</label>
-    <input placeholder="youremail@gmail.com" type="email" type="text" name="email">
+<form class="main" method="POST" action="{{ path 'users' }}" id="register-form">
+    <h3 class="title" style="font-size: 300%" id="error">{{error}}</h3>
+    <div class="formItem">
+        <label class="formText" for="email">Email:</label>
+        <input class="inputBoxes" type="email" type="text" value="{{rememberedEmail}}" name="email">
+    </div>
 
-    <label for="password">password:</label>
-	<input type="password" name="password" placeholder="password"/>
+    <div class="formItem">
+        <label class="formText" for="password">Password:</label>
+        <input class="inputBoxes" type="password" name="password"/>
+	</div>
+
+    <div class="formItem">
+        <label class="formText" for="confirm">Confirm Password:</label>
+        <input class="inputBoxes" type="password" name="confirmPassword"/>
+	</div>
 	
-    <label for="confirm">confirm password:</label>
-	<input type="password" name="confirmPassword" placeholder="password"/>
-	
-    <input type="submit" value="Create" id="register-form-submit-button">
+    <input class="formButton" type="submit" value="Create" id="register-form-submit-button">
 </form>
 
 {{> Footer}}

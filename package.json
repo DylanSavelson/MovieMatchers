@@ -10,6 +10,7 @@
 	"dependencies": {
 		"@playwright/test": "1.42.1",
 		"@types/node": "^20.11.10",
+		"axios": "^1.6.8",
 		"dotenv": "^16.4.5",
 		"glob": "^10.3.10",
 		"handlebars": "^4.7.8",

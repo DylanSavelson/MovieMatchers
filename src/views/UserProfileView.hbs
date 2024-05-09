@@ -3,7 +3,7 @@
 <h1 class="title">User Profile</h1>
 
 
-<h3 id="message">{{message}}</h3>
+<h3 class="title" style="font-size: 300%" id="message">{{message}}</h3>
 <h3 class="title" style="font-size: 300%" id="error">{{error}}</h3>
 
 <form class="main" method="POST" action="{{ path 'users' }}/{{ userId }}/edit" id="edit-user-form">
@@ -26,8 +26,8 @@
     </div>
 
     <div class="formCheckbox">
-        <input type="checkbox" id="public" name="public">
-        <label class="formText" for="public">{{publicMessage}}</label>
+        <input type="checkbox" id="profileVisibility" name="profileVisibility">
+        <label class="formText" for="profileVisibility">{{profileVisibility}}</label>
     </div>
     <input class="formButton" type="submit" value="Edit" id="edit-user-form-submit-button">
 </form>
