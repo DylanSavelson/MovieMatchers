@@ -30,8 +30,6 @@ export default class AuthController {
 	}
 
 	registerRoutes(router: Router) {
-		router.get("/movie", this.getMovieForm);
-		router.post("/movie", this.movie);
 		router.get("/register", this.getRegistrationForm);
 		router.get("/login", this.getLoginForm);
 		router.post("/login", this.login);
@@ -43,23 +41,6 @@ export default class AuthController {
 	}
 
 
-	getMovieForm = async (req: Request, res: Response) => 
-	{
-		const session = req.getSession();
-		res.setCookie( 
-			session.cookie
-		  );
-		await res.send({
-			statusCode: StatusCode.OK,
-			message: "Movie search form",
-			payload: {
-				searchMovie: true,
-				sessionCookie: session.get("userId") ? true : false,
-				userId: session.get("userId")
-			},
-			template: "MovieView",
-		});
-	}
 
 	getWatchedPage = async (req: Request, res: Response) => {
 		const session = req.getSession();
@@ -119,9 +100,7 @@ export default class AuthController {
 		});
 	};
 
-	movie = async (req: Request, res: Response) => {
-		const new_movie = await Movie.read(this.sql, req.body.movie)
-	}
+
 
 
 	login = async (req: Request, res: Response) => {

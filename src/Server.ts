@@ -3,6 +3,7 @@ import Request from "./router/Request";
 import Response, { StatusCode } from "./router/Response";
 import Router from "./router/Router";
 import Controller from "./controllers/Controller";
+import MovieController from "./controllers/MovieController";
 import postgres from "postgres";
 import fs from "fs/promises";
 import SessionManager from "./auth/SessionManager";
@@ -31,6 +32,8 @@ export default class Server {
 	private sql: postgres.Sql;
 	private router: Router;
 	private controller: Controller;
+	private movieController: MovieController;
+
 
 	/**
 	 * Initializes a new Server instance. The server is not started until the `start` method is called.
@@ -44,8 +47,11 @@ export default class Server {
 
 		this.router = new Router();
 		this.controller = new Controller(this.sql);
+		this.movieController = new MovieController(this.sql);
 
 		this.controller.registerRoutes(this.router);
+		this.movieController.registerRoutes(this.router);
+
 
 		this.router.get("/", (req: Request, res: Response) => {
 			const session = req.getSession();

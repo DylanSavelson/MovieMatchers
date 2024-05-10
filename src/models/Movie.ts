@@ -9,7 +9,11 @@ import axios from "axios";
 
 
 export interface MovieProps {
-	id?: number;
+	id?: number,
+	title: string,
+	description: string,
+	status: 'watched' | 'to_watch',
+	user_id: number
 }
 
 export default class Movie {
@@ -23,27 +27,30 @@ export default class Movie {
 	}
 
 	static async read(sql: postgres.Sql<any>, movie_name: string): Promise<Movie> {
-		// if movie not found in db search using api then add to db
-		const url = `https://api.themoviedb.org/3/search/movie?query=${movie_name}&include_adult=false&language=en-US&page=1`;
-		const response = await axios.get(url);
-
-		console.log(response.data);
-
-		try {
-			await sql`
-			INSERT INTO movies ("id", "title")
-			VALUES (${response.data.name}, ${response.data.name})
-			`;
-
-			console.log("Successfully inserted! CTRL+C to exit.");
-		} catch (error) {
-			console.error(error);
-		}
 		return new Movie(sql, {});
 	}
 
-	static async readAll(sql: postgres.Sql<any>): Promise<Movie[]> {
-		return [new Movie(sql, {})];
+	static async readAll(sql: postgres.Sql<any>, movie_name: string, user_id: number): Promise<Movie[]> {
+		// if movie not found in db search using api then add to db
+		const url = `https://api.themoviedb.org/3/search/movie?query=${movie_name}&api_key=6fcea430137f18e2310636c498360fc8`;
+		const response = await axios.get(url);
+
+		let possibleMovies: Movie[] = []
+		let movie: MovieProps;
+		for(let i = 0; i < response.data.results.length; i++)
+		{
+			movie = {
+				id: response.data.results[i].id,
+				title: response.data.results[i].title,
+				description: response.data.results[i].overview, 
+				status: 'to_watch',
+				user_id: user_id
+			};
+			possibleMovies[i] = new Movie(sql, convertToCase(snakeToCamel, movie) as MovieProps)
+		}
+	
+
+		return possibleMovies;
 	}
 
 	async update(updateProps: Partial<MovieProps>) {
