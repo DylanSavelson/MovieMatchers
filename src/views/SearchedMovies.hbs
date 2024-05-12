@@ -1,8 +1,11 @@
 {{> Header }}
 
-<div>
+<div class="movies">
     {{#each movie}}
-        <h1 class="title">{{this.props.title}}</h1>
+        <a href="" class="movie">
+            <img class="moviePoster" src="{{this.props.moviePoster}}">
+            <p class="movieTitle">{{this.props.title}}</p>
+        </a>
     {{/each}}
 </div>
 

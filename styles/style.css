@@ -158,3 +158,44 @@ footer {
     display:flex;
     gap: 1rem;
 }
+
+
+.moviePoster{
+    height: 18.288rem;
+    width: 12.366rem;
+    border: 0.4rem solid rgb(37, 37, 37);
+}
+
+.movies {
+    display: flex;
+    gap:1rem;
+    flex-wrap: wrap;
+    width: 70rem;
+    align-items: baseline;
+    justify-content: center;
+}
+
+.movieTitle{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    font-family: 'Adlinnaka';
+    font-size: 70%;
+    color: black;
+    max-width: 100%;
+    text-align: center;
+}
+
+.movie {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 12.766rem;
+}
+
+a {
+    text-decoration: none !important;
+}

@@ -7,7 +7,7 @@ import {
 } from "../utils";
 
 export interface UserProps {
-	id?: number;
+	userId?: number;
 	email: string;
 	password: string;
 	createdAt: Date;
@@ -114,7 +114,7 @@ export default class User {
 		const connection = await this.sql.reserve();
 
 		const [dupeEmail] = await connection<UserProps[]>`
-		SELECT * FROM users WHERE email = ${updateProps.email} and id != ${updateProps.id}`;
+		SELECT * FROM users WHERE email = ${updateProps.email} and id != ${updateProps.userId}`;
 		if (dupeEmail)
 		{
 			throw new InvalidCredentialsError();
@@ -125,7 +125,7 @@ export default class User {
 			SET
 				${this.sql(convertToCase(camelToSnake, updateProps))}, edited_at = ${createUTCDate()}
 			WHERE
-				id = ${this.props.id}
+				id = ${this.props.userId}
 			RETURNING *
 		`;
 

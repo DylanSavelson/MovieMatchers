@@ -112,7 +112,7 @@ export default class AuthController {
 			const user = await User.login(this.sql, email, password);
 
 			const session = req.getSession();
-			session.set("userId", user.props.id);
+			session.set("userId", user.props.userId);
 
 			if (remember)
 			{
@@ -126,7 +126,7 @@ export default class AuthController {
 			await res.send({
 				statusCode: StatusCode.OK,
 				message: "Successful Login",
-				redirect: "/watched/" + user.props.id,
+				redirect: "/watched/" + user.props.userId,
 			});
 		} catch (error) {
 			if (!email)
@@ -174,10 +174,10 @@ export default class AuthController {
 		if(req.session.get("userId"))
 		{
 			let user = await User.read(this.sql, req.session.get("userId"));
-			if (req.session.get("userId") == user.props.id)
+			if (req.session.get("userId") == user.props.userId)
 			{
 				const userProps: Partial<UserProps> = {
-					id: req.session.get("userId")
+					userId: req.session.get("userId")
 				};
 
 				if (req.body.email) {
@@ -220,7 +220,7 @@ export default class AuthController {
 					await res.send({
 						statusCode: StatusCode.BadRequest,
 						message: "User with this email already exists",		
-						redirect: `/users/${user.props.id}/edit?failure=yes`,
+						redirect: `/users/${user.props.userId}/edit?failure=yes`,
 					});
 					return
 				}
@@ -228,7 +228,7 @@ export default class AuthController {
 				await res.send({
 					statusCode: StatusCode.OK,
 					message: "User updated successfully!",		
-					redirect: `/users/${user.props.id}/edit?success=yes`,
+					redirect: `/users/${user.props.userId}/edit?success=yes`,
 				});
 			}
 		}
