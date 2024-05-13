@@ -38,7 +38,7 @@ export default class AuthController {
 		  );
           const new_movies = await Movie.readAll(this.sql, req.body.movie, req.session.get("userId"))
 
-          if (new_movies)
+          if (new_movies.length > 0)
           {
               await res.send({
                   statusCode: StatusCode.OK,
@@ -46,11 +46,22 @@ export default class AuthController {
                   payload: {
                     sessionCookie: session.get("userId") ? true : false,
                     userId: session.get("userId"),
-                    movie: new_movies
-                  },
+                    movie: new_movies                  },
                   template: "SearchedMovies",
               });
           }
+		  else
+		  {
+			await res.send({
+				statusCode: StatusCode.OK,
+				message: "Movies",
+				payload: {
+				  sessionCookie: session.get("userId") ? true : false,
+				  userId: session.get("userId")
+				},
+				redirect: "/movie?error=No found content",
+			});
+		  }
     }
 
 	getMovieForm = async (req: Request, res: Response) => 
@@ -64,7 +75,8 @@ export default class AuthController {
 			message: "Movie search form",
 			payload: {
 				sessionCookie: session.get("userId") ? true : false,
-				userId: session.get("userId")
+				userId: session.get("userId"),
+				error: req.getSearchParams().get("error"),
 			},
 			template: "MovieView",
 		});

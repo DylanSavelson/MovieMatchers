@@ -14,11 +14,16 @@
 			<ul class="navLogo">
 				<li><a class="navLink" href="{{ path '' }}"><img src="../../favicon.ico" height="50vh" width="50vw"/></a></li>
 			</ul>
+			<ul class="hamburger">
+				<li>
+					<button class="hamburger"><img src="../../hamburger.png" height="25" width="25" ></button>
+				</li>
+			</ul>
 			<ul class="navOptions">
 				<li><a class="navLink" href="{{ path '' }}">Recommendations</a></li>
 
 				{{#if sessionCookie}}
-					<li><a class="navLink" href="{{ path 'movie' }}">Add Movie</a></li>
+					<li><a class="navLink" href="{{ path 'movie' }}">Add Content</a></li>
 					<li><a class="navLink" href="{{ path 'watched/' }}{{ userId }}">Watched</a></li>
 					<li><a class="navLink" href="{{ path '' }}">To Watch</a></li>
 					<li><a class="navLink" href="{{ path 'users/' }}{{ userId }}/edit">Profile</a></li>
