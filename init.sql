@@ -4,14 +4,12 @@ CREATE DATABASE "MovieDB";
 \c MovieDB;
 
 DROP TYPE IF EXISTS movie_status;
-CREATE TYPE movie_status AS ENUM ('watched', 'to_watch');
 
 DROP TABLE IF EXISTS movies;
 CREATE TABLE movies (
   movie_id SERIAL PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
   description TEXT NOT NULL,
-  status movie_status NOT NULL DEFAULT 'to_watch',
   movie_poster VARCHAR(255)
   );
 
@@ -31,5 +29,6 @@ DROP TABLE IF EXISTS watched_movies;
 CREATE TABLE watched_movies (
   user_id INTEGER REFERENCES users(user_id),
   movie_id INTEGER REFERENCES movies(movie_id),
-  PRIMARY KEY (user_id, movie_id)
+  PRIMARY KEY (user_id, movie_id),
+  rating INTEGER
 );
