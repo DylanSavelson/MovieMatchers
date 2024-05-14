@@ -1,4 +1,4 @@
-import postgres from "postgres";
+import postgres, { camel } from "postgres";
 import {
 	camelToSnake,
 	convertToCase,
@@ -23,11 +23,21 @@ export default class Movie {
 	) {}
 
 	static async create(sql: postgres.Sql<any>, props: MovieProps): Promise<Movie> {
-		return new Movie(sql, {});
+		const connection = await sql.reserve();
+
+		const [row] = await connection<MovieProps[]>`
+		INSERT INTO movies
+			${sql(convertToCase(camelToSnake, props))}
+		RETURNING *
+		`;
+
+		await connection.release();
+
+		return new Movie(sql, convertToCase(snakeToCamel, row) as MovieProps);
 	}
 
 	static async read(sql: postgres.Sql<any>, movie_id: number): Promise<Movie> {
-		return new Movie(sql, {});
+		return new Movie(sql, { });
 	}
 
 	static async readAll(sql: postgres.Sql<any>, movie_name: string): Promise<Movie[]> {
@@ -60,6 +70,7 @@ export default class Movie {
 	}
 
 	async update(updateProps: Partial<MovieProps>) {
+		// If they update the rating change the required stuff
 	}
 
 	async delete() {
