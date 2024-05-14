@@ -4,7 +4,7 @@
   }
 
 .bg{
-    background-image:linear-gradient(to right, #323232, #5f5f5f) ;
+    background-image:linear-gradient(to right, #323232, #5f5f5f);
 }
 
 .main{
@@ -129,6 +129,12 @@ ul {
     }
     #navMenu {
         display:none;
+        position: absolute;
+        background:#5f5f5f;
+        top: 10vh;
+        padding: 5px;
+        align-items: center;
+        border: 2px solid black;
     }
     #hamburgerMenu {
         display: flex;
