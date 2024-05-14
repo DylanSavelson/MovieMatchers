@@ -48,6 +48,7 @@
 header {
     padding: 3vh;
     padding-right: 0;
+    padding-left: 0;
     width: 90%;
 }
 
@@ -68,10 +69,6 @@ ul {
     list-style-type: none;
 }
 
-.navLogo {
-    margin-left: 5.5vw;
-}
-
 .navOptions {
     display:flex;
     align-items: center;
@@ -80,11 +77,37 @@ ul {
     margin-right: 10vw;
 }
 
-.navBox {
-    display: flex;
-    justify-content: space-between;
+.hamburger {
+    display: none;
 }
-  
+
+@media screen {
+    .navBox {
+        display: flex;
+        justify-content: space-between;
+        max-width: 80%;
+        gap:20vw;
+    }
+}
+
+@media screen and (max-width: 1620px){
+    .navBox{
+        gap:10vw;
+    }
+}
+@media screen and (max-width: 1265px){
+    .navOptions{
+        display: none;
+    }
+    .hamburger{
+        display:flex;
+        background-color: transparent;
+        margin-left: 3vw;
+    }
+    .navBox {
+        gap:60vw;
+    }
+}
 
 footer {
     position: fixed;
@@ -170,9 +193,9 @@ footer {
     display: flex;
     gap:1rem;
     flex-wrap: wrap;
-    width: 70rem;
     align-items: baseline;
     justify-content: center;
+    max-width: 70rem;    
 }
 
 .movieTitle{

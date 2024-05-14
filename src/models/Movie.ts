@@ -42,7 +42,7 @@ export default class Movie {
 
 	static async readAll(sql: postgres.Sql<any>, movie_name: string): Promise<Movie[]> {
 		// todo: check movies in db, add to possible movies then search api for any other movies comparing the ids making sure theres no dupe movies
-		const url = `https://api.themoviedb.org/3/search/multi?query=${movie_name}&api_key=6fcea430137f18e2310636c498360fc8`;
+		const url = `https://api.themoviedb.org/3/search/multi?query=${movie_name}&include_adult=false&api_key=6fcea430137f18e2310636c498360fc8`;
 		const response = await axios.get(url);
 
 		let possibleMovies: Movie[] = []
