@@ -77,9 +77,6 @@ ul {
     margin-right: 10vw;
 }
 
-.hamburger {
-    display: none;
-}
 
 @media screen {
     .navBox {
@@ -88,24 +85,58 @@ ul {
         max-width: 80%;
         gap:20vw;
     }
+    #hamburger {
+        display: none;
+    }
+    
+    #hamburgerMenu {
+        display: flex;
+        flex-direction: row;
+    }
+    #navMenu {
+        display:flex;
+        flex-direction: row;
+        gap:5vw;
+    }
 }
 
 @media screen and (max-width: 1620px){
     .navBox{
         gap:10vw;
     }
-}
-@media screen and (max-width: 1265px){
-    .navOptions{
+    #hamburger {
         display: none;
     }
-    .hamburger{
+    
+    #hamburgerMenu {
+        display: flex;
+        flex-direction: row;
+    }
+    #navMenu {
+        display:flex;
+    }
+
+}
+@media screen and (max-width: 1265px){
+    #hamburger{
         display:flex;
         background-color: transparent;
         margin-left: 3vw;
+        margin-bottom: 4vh;
     }
     .navBox {
         gap:60vw;
+    }
+    #navMenu {
+        display:none;
+    }
+    #hamburgerMenu {
+        display: flex;
+        flex-direction: column;
+    }
+    .navOptions {
+        gap: 0px;
+        align-items: normal;
     }
 }
 

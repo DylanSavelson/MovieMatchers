@@ -6,32 +6,64 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="{{ styles 'style.css' }}">
 	<title>{{ title }}</title>
+	<script>
+		const mediaQuerySmallScreen = window.matchMedia('(max-width: 1264px)');
+		const mediaQueryBigScreen = window.matchMedia('(min-width: 1265px)');
+		function changeSizeBig(e) {
+			if (e.matches)
+			{
+				navMenu.style.display = 'flex';
+				navMenu.style.flexDirection = 'row';
+			}
+		}
+		function changeSizeSmall(e)
+		{
+			if (e.matches)
+			{
+				navMenu.style.display = 'none';
+				navMenu.style.flexDirection = 'column';
+			}
+		}
+		mediaQuerySmallScreen.addListener(changeSizeSmall);
+		mediaQueryBigScreen.addListener(changeSizeBig);
+		function displayMenu()
+		{
+			let navMenu = document.getElementById("navMenu");
+
+			if (navMenu.style.display == 'flex')
+			{
+				navMenu.style.display = 'none';
+			}
+			else
+			{
+				navMenu.style.display = 'flex';
+				navMenu.style.flexDirection = 'column';
+			}
+		}
+	</script>
 </head>
 
 <body class="main bg">
 	<header>
 		<nav class="navBox">
 			<ul class="navLogo">
-				<li><a class="navLink" href="{{ path '' }}"><img src="../../favicon.ico" height="50vh" width="50vw"/></a></li>
+				<li><a href="{{ path '' }}"><img src="../../favicon.ico" height="50vh" width="50vw"/></a></li>
 			</ul>
-			<ul class="hamburger">
-				<li>
-					<button class="hamburger"><img src="../../hamburger.png" height="25" width="25" ></button>
-				</li>
-			</ul>
-			<ul class="navOptions">
-				<li><a class="navLink" href="{{ path '' }}">Recommendations</a></li>
-
-				{{#if sessionCookie}}
-					<li><a class="navLink" href="{{ path 'movie' }}">Add Content</a></li>
-					<li><a class="navLink" href="{{ path 'watched/' }}{{ userId }}">Watched</a></li>
-					<li><a class="navLink" href="{{ path '' }}">To Watch</a></li>
-					<li><a class="navLink" href="{{ path 'users/' }}{{ userId }}/edit">Profile</a></li>
-					<li><a class="navLink" href="{{ path 'logout' }}">Logout</a></li>
-				{{else}}
-					<li><a class="navLink" href="{{ path 'login' }}">Login</a></li>
-					<li><a class="navLink" href="{{ path 'register' }}">Register</a></li>
-				{{/if}}
+			<ul id="hamburgerMenu" class="navOptions">
+				<li><button onclick="displayMenu()" id="hamburger"><img src="../../hamburger.png" height="25" width="25" ></button></li>
+				<div id="navMenu">
+					<li><a class="navLink" href="{{ path '' }}">Recommendations</a></li>
+					{{#if sessionCookie}}
+						<li><a class="navLink" href="{{ path 'movie' }}">Add</a></li>
+						<li><a class="navLink" href="{{ path 'watched/' }}{{ userId }}">Watched</a></li>
+						<li><a class="navLink" href="{{ path '' }}">List</a></li>
+						<li><a class="navLink" href="{{ path 'users/' }}{{ userId }}/edit">Profile</a></li>
+						<li><a class="navLink" href="{{ path 'logout' }}">Logout</a></li>
+					{{else}}
+						<li><a class="navLink" href="{{ path 'login' }}">Login</a></li>
+						<li><a class="navLink" href="{{ path 'register' }}">Register</a></li>
+					{{/if}}
+				</div>
 			</ul>
 		</nav>
 	</header>
