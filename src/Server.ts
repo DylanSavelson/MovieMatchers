@@ -3,7 +3,7 @@ import Request from "./router/Request";
 import Response, { StatusCode } from "./router/Response";
 import Router from "./router/Router";
 import Controller from "./controllers/Controller";
-import MovieController from "./controllers/MovieController";
+import ContentController from "./controllers/ContentController";
 import postgres from "postgres";
 import fs from "fs/promises";
 import SessionManager from "./auth/SessionManager";
@@ -32,7 +32,7 @@ export default class Server {
 	private sql: postgres.Sql;
 	private router: Router;
 	private controller: Controller;
-	private movieController: MovieController;
+	private contentController: ContentController;
 
 
 	/**
@@ -47,10 +47,10 @@ export default class Server {
 
 		this.router = new Router();
 		this.controller = new Controller(this.sql);
-		this.movieController = new MovieController(this.sql);
+		this.contentController = new ContentController(this.sql);
 
 		this.controller.registerRoutes(this.router);
-		this.movieController.registerRoutes(this.router);
+		this.contentController.registerRoutes(this.router);
 
 
 		this.router.get("/", (req: Request, res: Response) => {

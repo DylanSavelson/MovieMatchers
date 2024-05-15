@@ -220,13 +220,13 @@ footer {
 }
 
 
-.moviePoster{
+.contentPoster{
     height: 18.288rem;
     width: 12.366rem;
     border: 0.4rem solid rgb(37, 37, 37);
 }
 
-.movies {
+.contents {
     display: flex;
     gap:1rem;
     flex-wrap: wrap;
@@ -235,7 +235,7 @@ footer {
     max-width: 70rem;    
 }
 
-.movieTitle{
+.contentTitle{
     display: flex;
     flex-wrap: wrap;
     margin: 0;
@@ -248,7 +248,7 @@ footer {
     text-align: center;
 }
 
-.movie {
+.content {
     display:flex;
     flex-direction: column;
     align-items: center;

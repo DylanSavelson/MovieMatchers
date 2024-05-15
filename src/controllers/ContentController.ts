@@ -13,7 +13,7 @@ import {
 	createUTCDate,
 	snakeToCamel,
 } from "../utils";
-import Movie from "../models/Movie";
+import Content from "../models/Content";
 
 
 export default class AuthController {
@@ -25,46 +25,47 @@ export default class AuthController {
 	}
 
 	registerRoutes(router: Router) {
-		router.get("/movie", this.getMovieForm);
-        router.post("/movie", this.getSearchedMovies);
+		router.get("/content", this.getContentForm);
+        router.post("/content", this.getSearchedContents);
     }
 
 
-    getSearchedMovies = async (req: Request, res: Response) => 
+    getSearchedContents = async (req: Request, res: Response) => 
     {
         const session = req.getSession();
 		res.setCookie( 
 			session.cookie
 		  );
-          const new_movies = await Movie.readAll(this.sql, req.body.movie, req.session.get("userId"))
+          const new_content = await Content.readAll(this.sql, req.body.content)
 
-          if (new_movies.length > 0)
+          if (new_content.length > 0)
           {
               await res.send({
                   statusCode: StatusCode.OK,
-                  message: "Movies",
+                  message: "Contents",
                   payload: {
                     sessionCookie: session.get("userId") ? true : false,
                     userId: session.get("userId"),
-                    movie: new_movies                  },
-                  template: "SearchedMovies",
+                    content: new_content           
+			    },
+                  template: "SearchedContents",
               });
           }
 		  else
 		  {
 			await res.send({
 				statusCode: StatusCode.OK,
-				message: "Movies",
+				message: "Contents",
 				payload: {
 				  sessionCookie: session.get("userId") ? true : false,
 				  userId: session.get("userId")
 				},
-				redirect: "/movie?error=No found content",
+				redirect: "/content?error=No found content",
 			});
 		  }
     }
 
-	getMovieForm = async (req: Request, res: Response) => 
+	getContentForm = async (req: Request, res: Response) => 
 	{
 		const session = req.getSession();
 		res.setCookie( 
@@ -72,13 +73,13 @@ export default class AuthController {
 		  );
 		await res.send({
 			statusCode: StatusCode.OK,
-			message: "Movie search form",
+			message: "Content search form",
 			payload: {
 				sessionCookie: session.get("userId") ? true : false,
 				userId: session.get("userId"),
 				error: req.getSearchParams().get("error"),
 			},
-			template: "MovieView",
+			template: "ContentView",
 		});
 	}
 

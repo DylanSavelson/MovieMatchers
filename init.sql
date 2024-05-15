@@ -1,16 +1,15 @@
-DROP DATABASE IF EXISTS "MovieDB";
-CREATE DATABASE "MovieDB";
+DROP DATABASE IF EXISTS "ContentDB";
+CREATE DATABASE "ContentDB";
 
-\c MovieDB;
+\c ContentDB;
 
-DROP TYPE IF EXISTS movie_status;
 
-DROP TABLE IF EXISTS movies;
-CREATE TABLE movies (
-  movie_id SERIAL PRIMARY KEY,
+DROP TABLE IF EXISTS content;
+CREATE TABLE content (
+  content_id SERIAL PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
   description TEXT NOT NULL,
-  movie_poster VARCHAR(255)
+  content_poster VARCHAR(255)
   );
 
 
@@ -25,10 +24,10 @@ CREATE TABLE users (
     edited_at TIMESTAMP
 );
 
-DROP TABLE IF EXISTS watched_movies;
-CREATE TABLE watched_movies (
+DROP TABLE IF EXISTS watched_content;
+CREATE TABLE watched_content (
   user_id INTEGER REFERENCES users(user_id),
-  movie_id INTEGER REFERENCES movies(movie_id),
-  PRIMARY KEY (user_id, movie_id),
+  content_id INTEGER REFERENCES content(content_id),
+  PRIMARY KEY (user_id, content_id),
   rating INTEGER
 );

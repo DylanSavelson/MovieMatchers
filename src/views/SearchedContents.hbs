@@ -1,0 +1,12 @@
+{{> Header }}
+
+<div class="contents">
+    {{#each content}}
+        <a href="" class="content">
+            <img class="contentPoster" src="{{this.props.contentPoster}}">
+            <p class="contentTitle">{{this.props.title}}</p>
+        </a>
+    {{/each}}
+</div>
+
+{{> Footer }}
