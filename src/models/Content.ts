@@ -36,7 +36,17 @@ export default class Content {
 	}
 
 	static async read(sql: postgres.Sql<any>, content_id: number): Promise<Content> {
-		return new Content(sql, { });
+		const connection = await sql.reserve();
+
+		const [row] = await connection<ContentProps[]>`
+			SELECT * 
+			FROM content
+			WHERE content_id = ${content_id}
+		`;
+
+		await connection.release();
+
+		return new Content(sql, convertToCase(snakeToCamel, row) as ContentProps );
 	}
 
 	static async readAll(sql: postgres.Sql<any>, content_name: string): Promise<Content[]> {
