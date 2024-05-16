@@ -27,8 +27,41 @@ export default class AuthController {
 	registerRoutes(router: Router) {
 		router.get("/content", this.getContentForm);
         router.post("/content", this.getSearchedContents);
+		router.get("/individual_content", this.getIndividualContent);
     }
 
+	getIndividualContent= async (req: Request, res: Response) => 
+	{
+		const content_id = req.getSearchParams().get("content_id")
+		const session = req.getSession();
+		res.setCookie( 
+			session.cookie
+		  );
+
+		if (content_id)
+		{
+			const content = await Content.read(this.sql, parseInt(content_id))
+			if (content)
+			{
+				await res.send({
+					statusCode: StatusCode.OK,
+					message: "Content page",
+					payload: {
+						sessionCookie: session.get("userId") ? true : false,
+						userId: session.get("userId"),
+						error: req.getSearchParams().get("error"),
+						content: content
+					},
+					template: "ContentView",
+				});
+			}
+			else
+			{
+
+			}
+		}
+
+	}
 
     getSearchedContents = async (req: Request, res: Response) => 
     {
@@ -79,7 +112,7 @@ export default class AuthController {
 				userId: session.get("userId"),
 				error: req.getSearchParams().get("error"),
 			},
-			template: "ContentView",
+			template: "ContentSearchView",
 		});
 	}
 
