@@ -17,8 +17,21 @@
         {{/if}}
         <p class="infoText">Description: {{#if description}} {{description}} {{else}}N/A{{/if}}</p>
             <div class="buttons">
-                <button class="formButton">Add To Watch</button>
-                <button class="formButton">Add Watched</button>
+                {{#if watched}}
+                    <form method="POST" action="{{ path 'update_rating/' }}{{userId}}?content_id={{ content.props.contentId }}" id="update-rating-form">
+                        <input class="formButton" type="submit" value="Update Rating" id="update-rating-button">
+                    </form>
+                {{else}}
+                    {{#if toWatch}}
+                        <form method="POST" action="{{ path 'add_watched/' }}{{userId}}?content_id={{ content.props.contentId }}" id="add-watched-form">
+                            <input class="formButton" type="submit" value="Add Watched" id="add-watched-button">
+                        </form>
+                    {{else}}
+                        <form method="POST" action="{{ path 'add_to_watch/' }}{{userId}}?content_id={{ content.props.contentId }}" id="add-to-watch-form">
+                            <input class="formButton" type="submit" value="Add To Watch" id="add-to-watch-button">
+                        </form>
+                    {{/if}}
+                {{/if}}
             </div>
         </div>
     </div>

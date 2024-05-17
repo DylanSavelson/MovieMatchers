@@ -14,6 +14,9 @@ import {
 	snakeToCamel,
 } from "../utils";
 import Content from "../models/Content";
+import ToWatchContent from "../models/ToWatchContent";
+import WatchedContent from "../models/WatchedContent";
+import { c } from "vite/dist/node/types.d-aGj9QkWt";
 
 
 export default class AuthController {
@@ -28,9 +31,89 @@ export default class AuthController {
 		router.get("/content", this.getContentForm);
         router.post("/content", this.getSearchedContents);
 		router.get("/individual_content", this.getIndividualContent);
+		router.get("/to_watch/:id", this.getToWatchPage);
 		router.get("/watched/:id", this.getWatchedPage);
+		router.post("/add_to_watch/:id", this.addToWatch);
     }
 
+	addToWatch = async (req: Request, res: Response) => {
+		const session = req.getSession();
+		res.setCookie( 
+			session.cookie
+		);
+		const contentId = req.getSearchParams().get("content_id")
+		const userId = session.get("userId")
+		if (contentId)
+		{
+			await ToWatchContent.add(this.sql,parseInt(contentId), userId)
+			await res.send({
+				statusCode: StatusCode.OK,
+				message: "User to watch page",		
+				redirect: `/to_watch/${userId}?user=${userId}`,
+			});
+		}
+	}
+
+	getToWatchPage = async (req: Request, res: Response) => {
+		const session = req.getSession();
+		res.setCookie( 
+			session.cookie
+		  );
+		if(req.session.get("userId"))
+		{	
+			const userId = session.get("userId");
+			const user = req.getSearchParams().get("user");
+			const content= await ToWatchContent.readAll(this.sql, userId)
+			if (userId == user)
+			{
+				await res.send({
+					statusCode: StatusCode.OK,
+					message: "To Watch List",
+					payload: {
+						sessionCookie: session.get("userId") ? true : false,
+						userId: session.get("userId"),
+						content: content
+					},
+					template: "ToWatchView",
+				});
+			}
+			else
+			{
+				const url = req.getURL();
+				let profileId = url.toString().split('/')[4];
+				let userProfile = await User.read(this.sql, parseInt(profileId));
+				if (userProfile.props.visibility)
+				{
+					await res.send({
+						statusCode: StatusCode.OK,
+						message: "To Watch List",
+						payload: {
+							sessionCookie: session.get("userId") ? true : false,
+							userId: session.get("userId")
+						},
+						template: "ToWatchView",
+					});
+				}
+				else
+				{
+					await res.send({
+						statusCode: StatusCode.Forbidden,
+						message: "not authenticated",
+						redirect: "/error?error=Profile is private",
+					});
+				}
+			}
+		}
+		else
+		{
+			await res.send({
+				statusCode: StatusCode.Forbidden,
+				message: "not authenticated",
+				redirect: "/login",
+			});
+		}
+
+	}
 	getWatchedPage = async (req: Request, res: Response) => {
 		const session = req.getSession();
 		res.setCookie( 
@@ -58,7 +141,10 @@ export default class AuthController {
 
 		if (content_id)
 		{
-			const content = await Content.read(this.sql, parseInt(content_id))
+			const userId = session.get("userId")
+			const content = await Content.read(this.sql, parseInt(content_id));
+			const watched = await WatchedContent.read(this.sql, userId, parseInt(content_id));
+			const toWatch = await ToWatchContent.read(this.sql, userId, parseInt(content_id));
 			if (content)
 			{
 				let new_description = content.props.description
@@ -74,14 +160,20 @@ export default class AuthController {
 						userId: session.get("userId"),
 						error: req.getSearchParams().get("error"),
 						content: content,
-						description: new_description
+						description: new_description,
+						watched: watched.props.contentId,
+						toWatch: toWatch.props.contentId
 					},
 					template: "ContentView",
 				});
 			}
 			else
 			{
-
+				await res.send({
+					statusCode: StatusCode.Forbidden,
+					message: "not authenticated",
+					redirect: "/login",
+				});
 			}
 		}
 
@@ -124,21 +216,31 @@ export default class AuthController {
 
 	getContentForm = async (req: Request, res: Response) => 
 	{
-		const session = req.getSession();
-		res.setCookie( 
-			session.cookie
-		  );
-		await res.send({
-			statusCode: StatusCode.OK,
-			message: "Content search form",
-			payload: {
-				sessionCookie: session.get("userId") ? true : false,
-				userId: session.get("userId"),
-				error: req.getSearchParams().get("error"),
-			},
-			template: "ContentSearchView",
-		});
+		if(req.session.get("userId"))
+		{
+			const session = req.getSession();
+			res.setCookie( 
+				session.cookie
+			);
+			await res.send({
+				statusCode: StatusCode.OK,
+				message: "Content search form",
+				payload: {
+					sessionCookie: session.get("userId") ? true : false,
+					userId: session.get("userId"),
+					error: req.getSearchParams().get("error"),
+				},
+				template: "ContentSearchView",
+			});
+		}
+		else
+		{
+			await res.send({
+				statusCode: StatusCode.Forbidden,
+				message: "not authenticated",
+				redirect: "/login",
+			});
+		}
 	}
-
 
 }

@@ -153,13 +153,14 @@ export default class AuthController {
 			redirect: "/"
 		});
 	};
+
 	updateUserProfile = async (req: Request, res: Response) => {
 		if(req.session.get("userId"))
 		{
 			let user = await User.read(this.sql, req.session.get("userId"));
 			if (req.session.get("userId") == user.props.userId)
 			{
-				const userProps: Partial<UserProps> = {
+				let userProps: Partial<UserProps> = {
 					userId: req.session.get("userId")
 				};
 
@@ -183,6 +184,8 @@ export default class AuthController {
 							"private"
 						)
 					)
+					userProps.visibility = false
+
 				}
 				else
 				{
@@ -192,6 +195,7 @@ export default class AuthController {
 							"public"
 						)
 					)
+					userProps.visibility = true
 				}
 
 				try 
@@ -236,7 +240,7 @@ export default class AuthController {
 			let profileVisibilityMessage: string = "";
 			if (req.findCookie("profile_visibility")?.value === "public")
 			{
-				profileVisibilityMessage = "Profile public"	
+				profileVisibilityMessage = "Profile public"
 			}
 			else 
 			{
@@ -316,6 +320,7 @@ export default class AuthController {
 			email: req.body.email,
 			password: req.body.password,
 			createdAt: createUTCDate(),
+			visibility: true
 		};
 
 		try {

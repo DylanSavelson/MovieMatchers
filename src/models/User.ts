@@ -13,6 +13,7 @@ export interface UserProps {
 	createdAt: Date;
 	editedAt?: Date;
 	profile?: string;
+	visibility: boolean;
 }
 
 export class DuplicateEmailError extends Error {
@@ -102,7 +103,7 @@ export default class User {
 		const connection = await sql.reserve();
 		
 		const [userData] = await connection<UserProps[]>`
-		SELECT * FROM users WHERE id = ${id}`;
+		SELECT * FROM users WHERE user_id = ${id}`;
 		
 
 		await connection.release();
@@ -114,7 +115,7 @@ export default class User {
 		const connection = await this.sql.reserve();
 
 		const [dupeEmail] = await connection<UserProps[]>`
-		SELECT * FROM users WHERE email = ${updateProps.email} and id != ${updateProps.userId}`;
+		SELECT * FROM users WHERE email = ${updateProps.email} and user_id != ${updateProps.userId}`;
 		if (dupeEmail)
 		{
 			throw new InvalidCredentialsError();
@@ -125,7 +126,7 @@ export default class User {
 			SET
 				${this.sql(convertToCase(camelToSnake, updateProps))}, edited_at = ${createUTCDate()}
 			WHERE
-				id = ${this.props.userId}
+			user_id = ${this.props.userId}
 			RETURNING *
 		`;
 
