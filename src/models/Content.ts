@@ -99,10 +99,10 @@ export default class Content {
 						content = {
 							contentId: allResponse.data.results[i].id,
 							title: allResponse.data.results[i].title,
-							description: allResponse.data.results[i].overview, 
+							description: allResponse.data.results[i].overview || "N/A", 
 							contentPoster: "https://image.tmdb.org/t/p/original" + allResponse.data.results[i].poster_path,
 							type: allResponse.data.results[i].media_type,
-							createdBy: creators,
+							createdBy: creators ,
 							releaseDate: individualTvResponse.data.first_air_date,
 							genres: genres,
 							rating: (rating/seasons),

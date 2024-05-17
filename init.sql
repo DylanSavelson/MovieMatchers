@@ -18,18 +18,18 @@ CREATE TABLE content (
 	genres TEXT[],
 	rating FLOAT,
 	seasons INTEGER
-  );
+);
 
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
-    user_id SERIAL PRIMARY KEY,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-	  profile TEXT,
-	  is_admin BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    edited_at TIMESTAMP
+  user_id SERIAL PRIMARY KEY,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  profile TEXT,
+  is_admin BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  edited_at TIMESTAMP
 );
 
 DROP TABLE IF EXISTS watched_content;
@@ -37,10 +37,10 @@ CREATE TABLE watched_content (
   user_id INTEGER REFERENCES users(user_id),
   content_id INTEGER REFERENCES content(content_id),
   PRIMARY KEY (user_id, content_id),
-  rating INTEGER
+  rating FLOAT
 );
 
-DROP TABLE IF EXISTS watched_content;
+DROP TABLE IF EXISTS to_watch_content;
 CREATE TABLE to_watch_content (
   user_id INTEGER REFERENCES users(user_id),
   content_id INTEGER REFERENCES content(content_id),

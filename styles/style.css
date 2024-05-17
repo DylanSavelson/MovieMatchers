@@ -227,14 +227,14 @@ footer {
 }
 
 .bigContentPoster{
-    height: 79%;
-    width: 52%;
+    height: 69vh;
+    width: 45vh;
     border: 0.4em solid rgb(37, 37, 37);
 }
 
 .movieInfo {
-    height: 79%;
-    width: 52%;
+    height: 69vh;
+    width: 45vh;
     display:flex;
     flex-direction: column;
 }
@@ -270,4 +270,29 @@ footer {
 
 a {
     text-decoration: none !important;
+}
+
+.contentPage {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.posterAndInfo{
+    display: flex;
+    gap: 1vw;
+}
+
+.infoText{
+    font-family: 'Adlinnaka';
+    background-image: radial-gradient(circle farthest-corner at center center, #F1E696 0%, #926129 100%);
+    background-repeat: repeat;
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.buttons{
+    display: flex;
+    gap: 1vw;
 }
