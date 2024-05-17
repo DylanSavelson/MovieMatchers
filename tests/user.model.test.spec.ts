@@ -45,6 +45,7 @@ test.describe("CRUD operations", () => {
 			email: props.email || "user@email.com",
 			password: props.password || "password",
 			createdAt: props.createdAt || createUTCDate(),
+			visibility: true
 		});
 	};
 
