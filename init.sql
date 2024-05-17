@@ -44,5 +44,5 @@ DROP TABLE IF EXISTS to_watch_content;
 CREATE TABLE to_watch_content (
   user_id INTEGER REFERENCES users(user_id),
   content_id INTEGER REFERENCES content(content_id),
-  PRIMARY KEY (user_id, content_id),
+  PRIMARY KEY (user_id, content_id)
 );
