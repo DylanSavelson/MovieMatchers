@@ -2,8 +2,8 @@
 
 <div class="contents">
     {{#each content}}
-        <a href="" class="content">
-            <img class="contentPoster" src="{{this.props.contentPoster}}">
+        <a href="{{ path 'individual_content?content_id=' }}{{ this.props.contentId }}" class="content">
+            <img class="smallContentPoster" src="{{this.props.contentPoster}}">
             <p class="contentTitle">{{this.props.title}}</p>
         </a>
     {{/each}}

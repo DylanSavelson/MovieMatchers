@@ -220,12 +220,24 @@ footer {
 }
 
 
-.contentPoster{
+.smallContentPoster{
     height: 18.288rem;
     width: 12.366rem;
     border: 0.4rem solid rgb(37, 37, 37);
 }
 
+.bigContentPoster{
+    height: 79%;
+    width: 52%;
+    border: 0.4em solid rgb(37, 37, 37);
+}
+
+.movieInfo {
+    height: 79%;
+    width: 52%;
+    display:flex;
+    flex-direction: column;
+}
 .contents {
     display: flex;
     gap:1rem;

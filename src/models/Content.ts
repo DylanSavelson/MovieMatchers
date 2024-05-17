@@ -6,13 +6,21 @@ import {
 	snakeToCamel,
 } from "../utils";
 import axios from "axios";
+import { CONNREFUSED } from "node:dns";
+import internal from "node:stream";
 
 
 export interface ContentProps {
-	content_id: number,
+	contentId: number,
 	title: string,
 	description: string,
-	content_poster: string
+	contentPoster: string,
+	type: "movie" | "tv",
+	createdBy: string[],
+	releaseDate: string,
+	genres: string[],
+	rating: number,
+	seasons?: number
 }
 
 export default class Content {
@@ -50,25 +58,89 @@ export default class Content {
 	}
 
 	static async readAll(sql: postgres.Sql<any>, content_name: string): Promise<Content[]> {
-		// todo: check Contents in db, add to possible Contents then search api for any other Contents comparing the ids making sure theres no dupe Contents
-		const url = `https://api.themoviedb.org/3/search/multi?query=${content_name}&include_adult=false&api_key=6fcea430137f18e2310636c498360fc8`;
-		const response = await axios.get(url);
+		const allContentUrl = `https://api.themoviedb.org/3/search/multi?query=${content_name}&include_adult=false&api_key=6fcea430137f18e2310636c498360fc8`;
+		const allResponse = await axios.get(allContentUrl);
 
 		let possibleContent: Content[] = [];
-		let content: ContentProps;
-		for(let i = 0; i < response.data.results.length; i++)
+		let content: Partial<ContentProps>;
+		for(let i = 0; i < allResponse.data.results.length; i++)
 		{
-			if (response.data.results[i].poster_path != null)
+			let existingContent = null;
+			if (allResponse.data.results[i].poster_path != null)
 			{
-				if (response.data.results[i].title != null)
+				if (allResponse.data.results[i].title != null)
 				{
-					content = {
-						content_id: response.data.results[i].id,
-						title: response.data.results[i].title,
-						description: response.data.results[i].overview, 
-						content_poster: "https://image.tmdb.org/t/p/original" + response.data.results[i].poster_path
-					};
-					possibleContent[i] = new Content(sql, convertToCase(snakeToCamel, content) as ContentProps)
+					existingContent = await Content.read(sql, allResponse.data.results[i].id);
+					if (allResponse.data.results[i].media_type == "tv")
+					{
+						let individualTvUrl = `https://api.themoviedb.org/3/tv/${allResponse.data.results[i].id}?language=en-US&api_key=6fcea430137f18e2310636c498360fc8`
+						let individualTvResponse = await axios.get(individualTvUrl);
+						
+						let creators: string[] = [];
+						let genres: string [] = [];
+						let rating: number = 0;
+						let seasons: number = 0;
+						for (let j = 0; j < individualTvResponse.data.created_by.length; j++)
+						{
+							creators[j] = individualTvResponse.data.created_by[j].name;
+						}
+						for (let k = 0; k < individualTvResponse.data.genres.length; k++)
+						{
+							genres[k] = individualTvResponse.data.genres[k].name;
+						}
+						for (let m = 0; m < individualTvResponse.data.seasons.length; m++)
+						{
+							if (individualTvResponse.data.seasons.vote_average != 0)
+							{
+								seasons+=1;
+								rating += individualTvResponse.data.seasons.vote_average;
+							}
+						}
+						content = {
+							contentId: allResponse.data.results[i].id,
+							title: allResponse.data.results[i].title,
+							description: allResponse.data.results[i].overview, 
+							contentPoster: "https://image.tmdb.org/t/p/original" + allResponse.data.results[i].poster_path,
+							type: allResponse.data.results[i].media_type,
+							createdBy: creators,
+							releaseDate: individualTvResponse.data.first_air_date,
+							genres: genres,
+							rating: (rating/seasons),
+							seasons: seasons
+						}
+					}
+					else
+					{
+						let individualMovieUrl = `https://api.themoviedb.org/3/movie/${allResponse.data.results[i].id}?language=en-US&api_key=6fcea430137f18e2310636c498360fc8`
+						let individualMovieResponse = await axios.get(individualMovieUrl);
+						let creators: string[] = [];
+						let genres: string [] = [];
+						for (let j = 0; j < individualMovieResponse.data.production_companies.length; j++)
+						{
+							creators[j] = individualMovieResponse.data.production_companies[j].name;
+						}
+						for (let k = 0; k < individualMovieResponse.data.genres.length; k++)
+						{
+							genres[k] = individualMovieResponse.data.genres[k].name;
+						}
+
+						content = {
+							contentId: allResponse.data.results[i].id,
+							title: allResponse.data.results[i].title,
+							description: allResponse.data.results[i].overview, 
+							contentPoster: "https://image.tmdb.org/t/p/original" + allResponse.data.results[i].poster_path,
+							type: allResponse.data.results[i].media_type,
+							createdBy: creators,
+							releaseDate: individualMovieResponse.data.release_date,
+							genres: genres,
+							rating: individualMovieResponse.data.vote_average,
+						}
+					}
+					if (!existingContent.props.contentId)
+					{
+						await Content.create(sql, content as ContentProps)
+					}
+					possibleContent[i] = new Content(sql, content as ContentProps)
 				}
 			}
 		}
