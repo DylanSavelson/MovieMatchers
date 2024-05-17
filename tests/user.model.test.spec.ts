@@ -1,23 +1,16 @@
 import postgres from "postgres";
-import {
-	test,
-	describe,
-	expect,
-	afterEach,
-	afterAll,
-	beforeEach,
-} from "vitest";
+import { test, expect, Page } from "@playwright/test";
 import User from "../src/models/User"
 import { UserProps } from "../src/models/User"
 import { createUTCDate } from "../src/utils";
 
-describe("CRUD operations", () => {
+test.describe("CRUD operations", () => {
 	// Set up the connection to the DB.
 	const sql = postgres({
 		database: "ContentDB",
 	});
 
-	beforeEach(async () => {
+	test.beforeEach(async () => {
 		// Anything you want to do before each test runs?
 	});
 
@@ -26,9 +19,9 @@ describe("CRUD operations", () => {
 	 * from the todos and subtodos tables and resets the sequence for each table.
 	 * @see https://www.postgresql.org/docs/13/sql-altersequence.html
 	 */
-	afterEach(async () => {
+	test.afterEach(async () => {
 		// Replace the table_name with the name of the table(s) you want to clean up.
-		const tables = ["users"];
+		const tables = ["users", "content", "to_watch_content", "watched_content"];
 
 		try {
 			for (const table of tables) {
@@ -43,7 +36,7 @@ describe("CRUD operations", () => {
 	});
 
 	// Close the connection to the DB after all tests are done.
-	afterAll(async () => {
+	test.afterAll(async () => {
 		await sql.end();
 	});
 
