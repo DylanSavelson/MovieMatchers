@@ -1,7 +1,26 @@
 {{> Header }}
-
-<h1 class="title">Watched</h1>
-<h1>user {{ userId }} watched page</h1>
-<img src="../../images/watched_content.png"/>
-
-{{> Footer}}
+<div class="contentPage">
+    <div style="display:flex; justify-content:center; align-items:center">
+        <img style="width:10vw;height:10vw;" src="{{user.props.profile}}"/>
+        <p class="title">{{user.props.email}}'s</p>
+    </div>
+    <p class="title">Watched List</p>
+    <div class="contentButtons">
+        {{#if lastProfile}}
+            <a class="formButton" href="{{ path 'to_watch/' }}{{ lastProfile }}" id="previous-user-button">Previous User</a>
+        {{/if}}
+        {{#if nextProfile}}
+            <a class="formButton" href="{{ path 'to_watch/' }}{{ nextProfile }}" id="next-user-button">Next User</a>
+        {{/if}}
+    </div>
+    <div class="contents">
+        {{#each content}}
+            <a href="{{ path 'individual_content?content_id=' }}{{ this.props.contentId }}" class="content">
+                <p class="contentTitle">Your Rating:/10</p>
+                <img class="smallContentPoster" src="{{this.props.contentPoster}}">
+                <p class="contentTitle">{{this.props.title}}</p>
+            </a>
+        {{/each}}
+    </div>
+</div>
+{{> Footer }}

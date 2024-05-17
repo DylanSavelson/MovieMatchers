@@ -62,7 +62,6 @@ header {
     -webkit-background-clip: text;
             background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-align: center;
 }
 
 ul {
@@ -207,6 +206,9 @@ footer {
     -webkit-background-clip: text;
             background-clip: text;
     -webkit-text-fill-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .formButton:hover {
@@ -276,6 +278,7 @@ a {
     display:flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 .posterAndInfo{
@@ -296,15 +299,9 @@ a {
     display: flex;
     gap: 1vw;
 }
-.viewToWatchButtons
-{
+
+.contentButtons{
     display: flex;
     gap:40vw;
     padding-bottom: 1vw;
-}
-.toWatchPage{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center
 }

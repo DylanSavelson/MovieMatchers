@@ -14,12 +14,12 @@ export default class ToWatchContent{
         private sql: postgres.Sql<any>,
     ){}
 
-    static async add(sql: postgres.Sql<any>, contentId: number, userId: number){
+    static async add(sql: postgres.Sql<any>, contentId: number, userId: number, rating: number){
         const connection = await sql.reserve();
 
         await connection`
             INSERT INTO watched_content
-            (user_id, content_id) VALUES (${userId}, ${contentId})
+            (user_id, content_id, rating) VALUES (${userId}, ${contentId}, ${rating})
         `;
         
         connection.release();
@@ -48,7 +48,7 @@ export default class ToWatchContent{
         await connection.release();
     }
 
-    static async readAll(sql: postgres.Sql<any>, userId: number)
+    static async readAll(sql: postgres.Sql<any>, userId: number): Promise<Content[]>
     {
         const connection = await sql.reserve();
 		const rows = await connection<ContentProps[]>`
@@ -56,14 +56,19 @@ export default class ToWatchContent{
 			FROM watched_content
 			where user_id = ${userId}
 		`;
-
-		await connection.release();
-
-		return rows.map(
+        await connection.release();
+        let new_rows  = rows.map(
 			(row) =>
-				new Content(sql, convertToCase(snakeToCamel, row) as ContentProps),
-		);
+				convertToCase(snakeToCamel, row),)
 
+        let content = [];
+        for (let i = 0; i < rows.length; i ++)
+        {
+            content[i] = await Content.read(sql, new_rows[i].contentId);
+        }
+
+
+		return content;
     }
     static async read(sql: postgres.Sql<any>, userId: number, contentId: number)
     {

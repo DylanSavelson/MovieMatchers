@@ -13,7 +13,7 @@ export interface UserProps {
 	createdAt: Date;
 	editedAt?: Date;
 	profile?: string;
-	visibility: boolean;
+	visibility?: boolean;
 }
 
 export class DuplicateEmailError extends Error {
