@@ -76,11 +76,4 @@ export default class Content {
 
 		return possibleContent;
 	}
-
-	async update(updateProps: Partial<ContentProps>) {
-		// If they update the rating change the required stuff
-	}
-
-	async delete() {
-	}
 }

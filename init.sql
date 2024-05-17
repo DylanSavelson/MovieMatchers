@@ -31,3 +31,10 @@ CREATE TABLE watched_content (
   PRIMARY KEY (user_id, content_id),
   rating INTEGER
 );
+
+DROP TABLE IF EXISTS watched_content;
+CREATE TABLE to_watch_content (
+  user_id INTEGER REFERENCES users(user_id),
+  content_id INTEGER REFERENCES content(content_id),
+  PRIMARY KEY (user_id, content_id),
+);

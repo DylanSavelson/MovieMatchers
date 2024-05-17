@@ -13,7 +13,7 @@ import {
 	createUTCDate,
 	snakeToCamel,
 } from "../utils";
-import Movie from "../models/Movie";
+import Movie from "../models/Content";
 
 
 /**
