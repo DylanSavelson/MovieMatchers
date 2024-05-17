@@ -56,7 +56,7 @@
 					{{#if sessionCookie}}
 						<li><a class="navLink" href="{{ path 'content' }}">Add</a></li>
 						<li><a class="navLink" href="{{ path 'watched/' }}{{ userId }}">Watched</a></li>
-						<li><a class="navLink" href="{{ path '' }}">List</a></li>
+						<li><a class="navLink" href="{{ path 'to_watch/' }}{{ userId }}?user={{ userId }}">To Watch</a></li>
 						<li><a class="navLink" href="{{ path 'users/' }}{{ userId }}/edit">Profile</a></li>
 						<li><a class="navLink" href="{{ path 'logout' }}">Logout</a></li>
 					{{else}}

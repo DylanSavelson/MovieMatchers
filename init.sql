@@ -29,7 +29,8 @@ CREATE TABLE users (
   profile TEXT,
   is_admin BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  edited_at TIMESTAMP
+  edited_at TIMESTAMP,
+  visibility BOOLEAN DEFAULT TRUE
 );
 
 DROP TABLE IF EXISTS watched_content;
