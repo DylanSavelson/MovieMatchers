@@ -14,12 +14,12 @@ export default class ToWatchContent{
         private sql: postgres.Sql<any>,
     ){}
 
-    static async add(sql: postgres.Sql<any>, content_id: number){
+    static async add(sql: postgres.Sql<any>, content_id: number, user_id: number){
         const connection = await sql.reserve();
 
         await connection`
             INSERT INTO to_watch_content
-            (content_id) VALUES (${content_id})
+            (user_id, content_id) VALUES (${user_id}, ${content_id})
         `;
         
         connection.release();
