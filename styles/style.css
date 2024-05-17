@@ -296,3 +296,15 @@ a {
     display: flex;
     gap: 1vw;
 }
+.viewToWatchButtons
+{
+    display: flex;
+    gap:40vw;
+    padding-bottom: 1vw;
+}
+.toWatchPage{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center
+}

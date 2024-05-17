@@ -1,10 +1,21 @@
 {{> Header }}
+<div class="toWatchPage">
+    <p class="title">{{user}}'s To Watch List</p>
+    <div class="viewToWatchButtons">
+        <form  method="GET" action="{{ path 'to_watch/' }}{{ lastProfile }}?user={{ userId }}" id="previous-user-form">
+            <input class="formButton" type="submit" value="Previous User" id="previous-user-button">
+        </form>
+        <form  method="GET" action="{{ path 'to_watch/' }}{{ nextProfile }}?user={{ userId }}" id="next-user-form">
+            <input class="formButton" type="submit" value="Next User" id="next-user-button">
+        </form>
+    </div>
     <div class="contents">
-    {{#each content}}
-        <a href="{{ path 'individual_content?content_id=' }}{{ this.props.contentId }}" class="content">
-            <img class="smallContentPoster" src="{{this.props.contentPoster}}">
-            <p class="contentTitle">{{this.props.title}}</p>
-        </a>
-    {{/each}}
+        {{#each content}}
+            <a href="{{ path 'individual_content?content_id=' }}{{ this.props.contentId }}" class="content">
+                <img class="smallContentPoster" src="{{this.props.contentPoster}}">
+                <p class="contentTitle">{{this.props.title}}</p>
+            </a>
+        {{/each}}
+    </div>
 </div>
 {{> Footer }}

@@ -176,25 +176,13 @@ export default class AuthController {
 					userProps.profile = req.body.profile;
 				}
 
-				if (req.body.profileVisibility == "on" && req.findCookie("profile_visibility")?.value == "public")
+				if (req.body.profileVisibility == "on" && user.props.visibility == true)
 				{
-					res.setCookie(
-						new Cookie(
-							"profile_visibility",
-							"private"
-						)
-					)
 					userProps.visibility = false
 
 				}
 				else
 				{
-					res.setCookie(
-						new Cookie(
-							"profile_visibility",
-							"public"
-						)
-					)
 					userProps.visibility = true
 				}
 
@@ -238,7 +226,7 @@ export default class AuthController {
 		{
 			const user = await User.read(this.sql, req.session.get("userId"));
 			let profileVisibilityMessage: string = "";
-			if (req.findCookie("profile_visibility")?.value === "public")
+			if (user.props.visibility)
 			{
 				profileVisibilityMessage = "Profile public"
 			}

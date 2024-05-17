@@ -31,11 +31,22 @@ export default class AuthController {
 		router.get("/content", this.getContentForm);
         router.post("/content", this.getSearchedContents);
 		router.get("/individual_content", this.getIndividualContent);
+		router.get("/error",this.getErrorView)
 		router.get("/to_watch/:id", this.getToWatchPage);
 		router.get("/watched/:id", this.getWatchedPage);
 		router.post("/add_to_watch/:id", this.addToWatch);
     }
-
+	getErrorView = async (req: Request, res: Response) => {
+		await res.send({
+			statusCode: StatusCode.BadRequest,
+			message: "Error View",
+			payload: {
+				error: req.getSearchParams().get("error")
+			},
+			template: "ErrorView",
+		});
+	}
+	
 	addToWatch = async (req: Request, res: Response) => {
 		const session = req.getSession();
 		res.setCookie( 
@@ -61,10 +72,38 @@ export default class AuthController {
 		  );
 		if(req.session.get("userId"))
 		{	
-			const userId = session.get("userId");
+			const url = req.getURL();
+			let profileId = url.toString().split('/')[4].split('?')[0];
 			const user = req.getSearchParams().get("user");
-			const content= await ToWatchContent.readAll(this.sql, userId)
-			if (userId == user)
+			const content = await ToWatchContent.readAll(this.sql, parseInt(profileId))
+			let nextUser;
+			let lastUser;
+			let nextProfileId = parseInt(profileId) + 1;
+			let lastProfileId = parseInt(profileId) - 1;
+			while (true)
+			{
+				nextUser = await User.read(this.sql, nextProfileId)
+				if (nextUser.props.visibility)
+					break
+				nextProfileId++;
+				if (!nextUser)
+					nextUser = null;
+					break
+
+			}
+			while (true)
+			{
+				lastUser = await User.read(this.sql, lastProfileId)
+				if (lastUser.props.visibility)
+					break
+				lastProfileId--;
+				if (!lastUser)
+					lastUser = null;
+					break
+
+			}
+			let userProfile = await User.read(this.sql, parseInt(profileId));
+			if (profileId == user)
 			{
 				await res.send({
 					statusCode: StatusCode.OK,
@@ -72,7 +111,10 @@ export default class AuthController {
 					payload: {
 						sessionCookie: session.get("userId") ? true : false,
 						userId: session.get("userId"),
-						content: content
+						content: content,
+						user: userProfile.props.email,
+						lastProfile: lastProfileId,
+						nextProfile: nextProfileId
 					},
 					template: "ToWatchView",
 				});
@@ -80,16 +122,21 @@ export default class AuthController {
 			else
 			{
 				const url = req.getURL();
-				let profileId = url.toString().split('/')[4];
+				let profileId = url.toString().split('/')[4].split('?')[0];
 				let userProfile = await User.read(this.sql, parseInt(profileId));
 				if (userProfile.props.visibility)
 				{
+					const content = await ToWatchContent.readAll(this.sql, parseInt(profileId))
 					await res.send({
 						statusCode: StatusCode.OK,
 						message: "To Watch List",
 						payload: {
 							sessionCookie: session.get("userId") ? true : false,
-							userId: session.get("userId")
+							userId: session.get("userId"),
+							content: content,
+							user: userProfile.props.email,
+							lastProfile: lastProfileId,
+							nextProfile: nextProfileId
 						},
 						template: "ToWatchView",
 					});
