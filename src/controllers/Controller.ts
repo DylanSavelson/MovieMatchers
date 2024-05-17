@@ -35,29 +35,12 @@ export default class AuthController {
 		router.post("/login", this.login);
 		router.get("/logout", this.logout);
 		router.post("/users", this.createUser);
-		router.get("/watched/:id", this.getWatchedPage);
 		router.get("/users/:id/edit", this.getUserProfileForm)
 		router.post("/users/:id/edit", this.updateUserProfile)
 	}
 
 
 
-	getWatchedPage = async (req: Request, res: Response) => {
-		const session = req.getSession();
-		res.setCookie( 
-			session.cookie
-		  );
-		await res.send({
-			statusCode: StatusCode.OK,
-			message: "Watched content page",
-			//get watched content and send here
-			payload: {
-				sessionCookie: session.get("userId") ? true : false,
-				userId: session.get("userId")
-			},
-			template: "WatchedView",
-		});
-	}
 
 	getRegistrationForm = async (req: Request, res: Response) => {
 		const session = req.getSession();

@@ -1,9 +1,26 @@
 {{> Header }}
 
+
 <div class="contentPage">
     <div><p class="title">{{content.props.title}}</p></div>
-    <img class="bigContentPoster" src="{{content.props.contentPoster}}">
-    <div class="movieInfo">
+    <div class="posterAndInfo">
+        <img class="bigContentPoster" src="{{content.props.contentPoster}}">
+        <div class="movieInfo">
+        <p class="infoText">Created By: {{#if content.props.createdBy}} {{content.props.createdBy}} {{else}}N/A{{/if}}</p>
+        <p class="infoText">Release Date: {{#if content.props.releaseDate}} {{content.props.releaseDate}} {{else}}N/A{{/if}}</p>
+        <p class="infoText">Genres: {{#if content.props.genres.length}} {{content.props.genres}} {{else}}N/A{{/if}}</p>
+        <p class="infoText">Rating: {{#if content.props.rating}} {{content.props.rating}}/10 {{else}}N/A{{/if}}</p>
+        {{#if content.props.seasons}}
+        <p class="infoText">Seasons: {{content.props.seasons}}</p>
+        {{else}}
+        <p class="infoText">Seasons: N/A</p>
+        {{/if}}
+        <p class="infoText">Description: {{#if description}} {{description}} {{else}}N/A{{/if}}</p>
+            <div class="buttons">
+                <button class="formButton">Add To Watch</button>
+                <button class="formButton">Add Watched</button>
+            </div>
+        </div>
     </div>
 </div>
 

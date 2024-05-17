@@ -28,7 +28,25 @@ export default class AuthController {
 		router.get("/content", this.getContentForm);
         router.post("/content", this.getSearchedContents);
 		router.get("/individual_content", this.getIndividualContent);
+		router.get("/watched/:id", this.getWatchedPage);
     }
+
+	getWatchedPage = async (req: Request, res: Response) => {
+		const session = req.getSession();
+		res.setCookie( 
+			session.cookie
+		  );
+		await res.send({
+			statusCode: StatusCode.OK,
+			message: "Watched content page",
+			//get watched content and send here
+			payload: {
+				sessionCookie: session.get("userId") ? true : false,
+				userId: session.get("userId")
+			},
+			template: "WatchedView",
+		});
+	}
 
 	getIndividualContent= async (req: Request, res: Response) => 
 	{
@@ -43,6 +61,11 @@ export default class AuthController {
 			const content = await Content.read(this.sql, parseInt(content_id))
 			if (content)
 			{
+				let new_description = content.props.description
+				if (new_description.length > 400)
+				{
+					new_description = new_description.substring(0, 400) + "...";
+				}
 				await res.send({
 					statusCode: StatusCode.OK,
 					message: "Content page",
@@ -50,7 +73,8 @@ export default class AuthController {
 						sessionCookie: session.get("userId") ? true : false,
 						userId: session.get("userId"),
 						error: req.getSearchParams().get("error"),
-						content: content
+						content: content,
+						description: new_description
 					},
 					template: "ContentView",
 				});
