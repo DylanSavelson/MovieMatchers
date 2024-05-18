@@ -7,10 +7,10 @@
     <p class="title" style="font-size:300%">Watched List</p>
     <div class="contentButtons">
         {{#if lastProfile}}
-            <a class="formButton" href="{{ path 'to_watch/' }}{{ lastProfile }}" id="previous-user-button">Previous User</a>
+            <a class="formButton" href="{{ path 'watched/' }}{{ lastProfile }}" id="previous-user-button">Previous User</a>
         {{/if}}
         {{#if nextProfile}}
-            <a class="formButton" href="{{ path 'to_watch/' }}{{ nextProfile }}" id="next-user-button">Next User</a>
+            <a class="formButton" href="{{ path 'watched/' }}{{ nextProfile }}" id="next-user-button">Next User</a>
         {{/if}}
     </div>
     <div class="contents">

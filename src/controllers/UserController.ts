@@ -39,9 +39,6 @@ export default class AuthController {
 		router.post("/users/:id/edit", this.updateUserProfile)
 	}
 
-
-
-
 	getRegistrationForm = async (req: Request, res: Response) => {
 		const session = req.getSession();
 		res.setCookie( 
