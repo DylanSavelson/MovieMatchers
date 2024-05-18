@@ -75,6 +75,7 @@ test.describe("CRUD operations", () => {
 
 	const createContent = async (props: Partial<ContentProps> = {}) => {
 		return await Content.create(sql, {
+            contentId: props.contentId || 1,
             title: props.title || "Logan",
             description: props.description || "Logan, The Wolverine goes on an adventure with a similar mutant to himself.",
             contentPoster: props.contentPoster || "the poster",
@@ -88,6 +89,7 @@ test.describe("CRUD operations", () => {
 
 	const createUser = async (props: Partial<UserProps> = {}) => {
 		return await User.create(sql, {
+            userId: props.userId || 1,
 			email: props.email || "user@email.com",
 			password: props.password || "password",
 			createdAt: props.createdAt || createUTCDate(),
@@ -95,47 +97,45 @@ test.describe("CRUD operations", () => {
 		});
 	};
 
-	test("content was added to database.", async () => {
+	test("content was added to watch list.", async () => {
 		const content = await createContent({});
         const user = await createUser({});
         
         const toWatchContent = await ToWatchContent.add(sql, content.props.contentId, user.props.userId);
 
-		expect().toBe("");
-		expect().toBe("");
+		expect(toWatchContent.props.title).toBe("Logan");
+		expect(toWatchContent.props.rating).toBe(10.0);
+		expect(toWatchContent.props.type).toBe("movie");
+        expect(toWatchContent.props.createdBy).toBeInstanceOf(Array);
 	});
 
-	test("Content ", async () => {
+	test("To watch content was successfully read", async () => {
 		const content = await createContent({});
         const user = await createUser({});
-        const toWatchContent = await ToWatchContent.add();
+        const toWatchContent = await ToWatchContent.read(sql, user.props.userId, content.props.contentId);
 
-		expect().toBe("");
-		expect().toBe("");
+		expect(toWatchContent.props.title).toBe("Logan");
+		expect(toWatchContent.props.rating).toBe(10.0);
+		expect(toWatchContent.props.type).toBe("movie");
+        expect(toWatchContent.props.createdBy).toBeInstanceOf(Array);
 	});
 
-	test("Content ", async () => {
-		const content = await createContent({});
+	test("To watch content list retrieved successfully", async () => {
         const user = await createUser({});
-        const toWatchContent = await ToWatchContent.add();
+        const toWatchContent = await ToWatchContent.readAll(sql, user.props.userId);
 
-		expect().toBe("");
-		expect().toBe("");
+		expect(toWatchContent.length).toBe(0);
 	});
 
-	test("Content ", async () => {
+	test("To watch content was deleted", async () => {
 		const content = await createContent({  });
+        const user = await createUser({});
+        await ToWatchContent.add(sql, content.props.contentId, user.props.userId)
+        const toWatchContent = await ToWatchContent.readAll(sql, user.props.userId);
 
-	});
-
-	test("Content ", async () => {
-		const content = await createContent({  });
-
-	});
-
-	test("Content ", async () => {
-		const content = await createContent({  });
-
-
+        expect(toWatchContent.length).toBe(1);
+        await ToWatchContent.remove(sql, content.props.contentId, user.props.userId);
+        
+        expect(toWatchContent.length).toBe(0);
 	});
 });

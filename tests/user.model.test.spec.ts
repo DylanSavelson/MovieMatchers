@@ -71,6 +71,7 @@ test.describe("CRUD operations", () => {
 
 	const createUser = async (props: Partial<UserProps> = {}) => {
 		return await User.create(sql, {
+			userId: props.userId || 1,
 			email: props.email || "user@email.com",
 			password: props.password || "password",
 			createdAt: props.createdAt || createUTCDate(),

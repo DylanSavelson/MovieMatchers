@@ -7,7 +7,7 @@ import {
 } from "../utils";
 
 export interface UserProps {
-	userId?: number;
+	userId: number;
 	email: string;
 	password: string;
 	createdAt: Date;
