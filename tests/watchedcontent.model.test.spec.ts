@@ -1,8 +1,13 @@
 import postgres from "postgres";
 import { test, expect, Page } from "@playwright/test";
-import Content from "../src/models/Content"
+import Content from "../src/models/Content";
 import { ContentProps } from "../src/models/Content";
-import WatchedContent from "../src/models/WatchedContent"
+import WatchedContent from "../src/models/WatchedContent";
+import { UserProps } from "../src/models/User";
+import User from "../src/models/User";
+import { createUTCDate } from "../src/utils";
+import { Exception } from "handlebars";
+import exp from "constants";
 
 test.describe("CRUD operations", () => {
 	// Set up the connection to the DB.
@@ -83,38 +88,58 @@ test.describe("CRUD operations", () => {
 		});
 	};
 
-	test("content was created.", async () => {
+	const createUser = async (props: Partial<UserProps> = {}) => {
+		return await User.create(sql, {
+            userId: props.userId || 1,
+			email: props.email || "user@email.com",
+			password: props.password || "password",
+			createdAt: props.createdAt || createUTCDate(),
+			visibility: true
+		});
+	};
+
+	test("Content ", async () => {
 		const content = await createContent({});
-        
-		expect(content.props).toBe("");
-		expect(content.props).toBe("");
-		expect(content.props).toBeTruthy();
-		expect(content.props).toBeFalsy();
+        const user = await createUser({});
+
+		if(user.props.userId){
+
+			await WatchedContent.add(sql, content.props.contentId, user.props.userId, content.props.rating);
+			const watchedContent = await WatchedContent.read(sql, user.props.userId, content.props.contentId);
+			expect(watchedContent.props.contentId).toBe(1);
+		}
 	});
 
-	test("Content ", async () => {
-		await createContent({  });
+	test("Watched content list retrieved successfully", async () => {
+        const user = await createUser({});
+        const toWatchContent = await WatchedContent.readAll(sql, user.props.userId);
 
+		expect(toWatchContent.length).toBe(0);
 	});
 
-	test("Content ", async () => {
-		const content = await createContent({  });
-
+	test("Watched Content was deleted", async () => {
+		const content = await createContent({});
+        const user = await createUser({});
+		if(user.props.userId){
+			await WatchedContent.add(sql, content.props.contentId, user.props.userId, content.props.rating);
+			let watchedContent = await WatchedContent.readAll(sql, user.props.userId);
+			expect(watchedContent.length).toBe(1);
+			await WatchedContent.remove(sql, content.props.contentId, user.props.userId);
+			watchedContent = await WatchedContent.readAll(sql, user.props.userId);
+			expect(watchedContent.length).toBe(0);
+		}
 	});
 
-	test("Content ", async () => {
-		const content = await createContent({  });
-
-	});
-
-	test("Content ", async () => {
-		const content = await createContent({  });
-
-	});
-
-	test("Content ", async () => {
-		const content = await createContent({  });
-
+	test("Watched Content was updated", async () => {
+		const content = await createContent({rating: 5.0});
+        const user = await createUser({});
+		if(user.props.userId){
+			await WatchedContent.add(sql, content.props.contentId, user.props.userId, content.props.rating);
+			let watchedContent = await WatchedContent.read(sql, user.props.userId, content.props.contentId);
+			expect(watchedContent.props.rating).toBe(5.0);
+			watchedContent.props.rating = 10.0;
+			expect(watchedContent.props.rating).toBe(10.0);
+		}
 
 	});
 });

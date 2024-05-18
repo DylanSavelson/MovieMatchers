@@ -1,10 +1,10 @@
 import postgres from "postgres";
 import { test, expect, Page } from "@playwright/test";
-import Content from "../src/models/Content"
+import Content from "../src/models/Content";
 import { ContentProps } from "../src/models/Content";
 import ToWatchContent from "../src/models/ToWatchContent";
-import { UserProps } from "../src/models/User"
-import User from "../src/models/User"
+import { UserProps } from "../src/models/User";
+import User from "../src/models/User";
 import { createUTCDate } from "../src/utils";
 
 
