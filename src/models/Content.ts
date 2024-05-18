@@ -20,7 +20,8 @@ export interface ContentProps {
 	releaseDate: string,
 	genres: string[],
 	rating: number,
-	seasons?: number
+	seasons?: number,
+	userRating?: number
 }
 
 export default class Content {

@@ -25,12 +25,12 @@ export default class ToWatchContent{
         connection.release();
     }
 
-    static async remove(sql: postgres.Sql<any>, contentId: number){
+    static async remove(sql: postgres.Sql<any>, contentId: number, userId: number){
         const connection = await sql.reserve();
 
         await connection`
             DELETE FROM to_watch_content
-            WHERE content_id = ${contentId}
+            WHERE content_id = ${contentId} and user_id = ${userId}
         `;
 
         await connection.release();

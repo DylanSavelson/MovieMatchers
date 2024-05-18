@@ -9,7 +9,7 @@ import axios from "axios";
 import { ContentProps } from "./Content";
 import Content from "./Content"
 
-export default class ToWatchContent{
+export default class WatchedContent{
     constructor(
         private sql: postgres.Sql<any>,
     ){}
@@ -25,24 +25,24 @@ export default class ToWatchContent{
         connection.release();
     }
 
-    static async update(sql: postgres.Sql<any>, contentId: number, newRating: number){
+    static async update(sql: postgres.Sql<any>, contentId: number, userId: number, newRating: number ){
         const connection = await sql.reserve();
 
         await connection`
             UPDATE watched_content
-            SET (rating) = ${newRating}
-            WHERE content_id = ${contentId}
+            SET rating = ${newRating}
+            WHERE content_id = ${contentId} and user_id = ${userId}
         `;
 
         await connection.release();
     }
 
-    static async remove(sql: postgres.Sql<any>, contentId: number){
+    static async remove(sql: postgres.Sql<any>, contentId: number, userId: number){
         const connection = await sql.reserve();
 
         await connection`
             DELETE FROM watched_content
-            WHERE content_id = ${contentId}
+            WHERE content_id = ${contentId} and user_id = ${userId}
         `;
 
         await connection.release();
@@ -65,6 +65,7 @@ export default class ToWatchContent{
         for (let i = 0; i < rows.length; i ++)
         {
             content[i] = await Content.read(sql, new_rows[i].contentId);
+            content[i].props.userRating = new_rows[i].rating
         }
 
 

@@ -35,9 +35,71 @@ export default class AuthController {
 		router.get("/to_watch/:id", this.getToWatchPage);
 		router.get("/watched/:id", this.getWatchedPage);
 		router.post("/add_to_watch/:id", this.addToWatch);
-		router.post("/add_watched/:id", this.addWatched)
+		router.post("/add_watched/:id", this.addWatched);
+		router.post("/update_rating/:id", this.updateRating);
+		router.post("/remove_to_watch/:id", this.removeFromToWatch);
+		router.post("/remove_watched/:id", this.removeFromWatched);
+
     }
+	removeFromToWatch = async (req: Request, res: Response) => {
+		const session = req.getSession();
+		res.setCookie( 
+			session.cookie
+		);
+		const contentId = req.getSearchParams().get("content_id");
+		const userId = session.get("userId");
+		if (contentId)
+		{
+			await ToWatchContent.remove(this.sql, parseInt(contentId), userId)
+			await res.send({
+				statusCode: StatusCode.OK,
+				message: "Removed from to watch",
+				redirect: `/to_watch/${userId}`
+			});
+		}
+	}
+
+	removeFromWatched = async (req: Request, res: Response) => {
+		const session = req.getSession();
+		res.setCookie( 
+			session.cookie
+		);
+		const contentId = req.getSearchParams().get("content_id");
+		const userId = session.get("userId");
+		if (contentId)
+		{
+			await WatchedContent.remove(this.sql, parseInt(contentId), userId)
+			await res.send({
+				statusCode: StatusCode.OK,
+				message: "Removed from watched",
+				redirect: `/watched/${userId}`
+			});
+		}
+	}
+
+	updateRating = async (req: Request, res: Response) => {
+		const session = req.getSession();
+		res.setCookie( 
+			session.cookie
+		);
+		const contentId = req.getSearchParams().get("content_id")
+		const userId = session.get("userId")
+		if (contentId)
+		{
+			await WatchedContent.update(this.sql, parseInt(contentId), userId, parseFloat(req.body.rating))
+			await res.send({
+				statusCode: StatusCode.OK,
+				message: "Rating updated",
+				redirect: `/watched/${userId}`
+			});
+		}
+
+	}
 	getErrorView = async (req: Request, res: Response) => {
+		const session = req.getSession();
+		res.setCookie( 
+			session.cookie
+		);
 		await res.send({
 			statusCode: StatusCode.BadRequest,
 			message: "Error View",
@@ -77,7 +139,8 @@ export default class AuthController {
 		}
 		if (contentId)
 		{
-			await WatchedContent.add(this.sql,parseInt(contentId), userId, rating)
+			await ToWatchContent.remove(this.sql, parseInt(contentId), userId)
+			await WatchedContent.add(this.sql, parseInt(contentId), userId, rating)
 			await res.send({
 				statusCode: StatusCode.OK,
 				message: "User watched page",		

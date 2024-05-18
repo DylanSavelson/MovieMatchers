@@ -16,7 +16,7 @@
     <div class="contents">
         {{#each content}}
             <a href="{{ path 'individual_content?content_id=' }}{{ this.props.contentId }}" class="content">
-                <p class="contentTitle">Your Rating:/10</p>
+                <p class="contentTitle">Your Rating: {{this.props.userRating}}/10</p>
                 <img class="smallContentPoster" src="{{this.props.contentPoster}}">
                 <p class="contentTitle">{{this.props.title}}</p>
             </a>
