@@ -27,9 +27,9 @@ export default class ToWatchContent{
             {   
                 let individualMovieUrl = `https://api.themoviedb.org/3/movie/${movieSimilarResponse.data.results[i].id}?language=en-US&api_key=6fcea430137f18e2310636c498360fc8`
                 let individualMovieResponse = await axios.get(individualMovieUrl);  
-                if (individualMovieResponse.data.results[i].poster_path != null)
+                if (individualMovieResponse.data.poster_path != null)
                 {
-                    if (individualMovieResponse.data.results[i].title != null)
+                    if (individualMovieResponse.data.title != null)
                     {
                         let creators: string[] = [];
 						let genres: string [] = [];
@@ -43,10 +43,10 @@ export default class ToWatchContent{
 						}
 
 						content = {
-							contentId: movieSimilarResponse.data.results[i].id,
-							title: movieSimilarResponse.data.results[i].title,
-							description: movieSimilarResponse.data.results[i].overview, 
-							contentPoster: "https://image.tmdb.org/t/p/original" + movieSimilarResponse.data.results[i].poster_path,
+							contentId: individualMovieResponse.data.id,
+							title: individualMovieResponse.data.title,
+							description: individualMovieResponse.data.overview, 
+							contentPoster: "https://image.tmdb.org/t/p/original" + individualMovieResponse.data.poster_path,
 							type: "movie",
 							createdBy: creators,
 							releaseDate: individualMovieResponse.data.release_date,
@@ -73,9 +73,9 @@ export default class ToWatchContent{
             const tvSimilarResponse = await axios.get(tvSimilarUrl);
             for(let i = 0; i < tvSimilarResponse.data.results.length; i++)
             {
-                if (tvSimilarResponse.data.results[i].poster_path != null)
+                if (tvSimilarResponse.data.poster_path != null)
                 {
-                    if (tvSimilarResponse.data.results[i].name != null)
+                    if (tvSimilarResponse.data.name != null)
                     {
                         let individualTvUrl = `https://api.themoviedb.org/3/tv/${tvSimilarResponse.data.results[i].id}?language=en-US&api_key=6fcea430137f18e2310636c498360fc8`
 						let individualTvResponse = await axios.get(individualTvUrl);	
@@ -101,10 +101,10 @@ export default class ToWatchContent{
 						}
 						rating = rating / seasons
 						content = {
-							contentId: tvSimilarResponse.data.results[i].id,
-							title: tvSimilarResponse.data.results[i].name,
-							description: tvSimilarResponse.data.results[i].overview || "N/A", 
-							contentPoster: "https://image.tmdb.org/t/p/original" + tvSimilarResponse.data.results[i].poster_path,
+							contentId: individualTvResponse.data.id,
+							title: individualTvResponse.data.name,
+							description: individualTvResponse.data.overview || "N/A", 
+							contentPoster: "https://image.tmdb.org/t/p/original" + individualTvResponse.data.poster_path,
 							type: "tv",
 							createdBy: creators ,
 							releaseDate: individualTvResponse.data.first_air_date,
