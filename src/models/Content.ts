@@ -11,15 +11,15 @@ import internal from "node:stream";
 
 
 export interface ContentProps {
-	contentId?: number,
+	contentId: number,
 	title: string,
 	description: string,
 	contentPoster: string,
 	type: "movie" | "tv",
-	createdBy?: string[],
-	releaseDate?: string,
-	genres?: string[],
-	rating?: number,
+	createdBy: string[],
+	releaseDate: string,
+	genres: string[],
+	rating: number,
 	seasons?: number
 }
 

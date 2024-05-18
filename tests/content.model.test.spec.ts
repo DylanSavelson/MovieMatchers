@@ -70,10 +70,15 @@ test.describe("CRUD operations", () => {
 
 	const createContent = async (props: Partial<ContentProps> = {}) => {
 		return await Content.create(sql, {
+            contentId: props.contentId || 1,
             title: props.title || "Logan",
             description: props.description || "Logan, The Wolverine goes on an adventure with a similar mutant to himself.",
             contentPoster: props.contentPoster || "the poster",
             type: props.type || "movie",
+            createdBy: props.createdBy || ["James Mangold"],
+            releaseDate: props.releaseDate || "2017-03-03",
+            genres: props.genres || ["Action", "Drama"],
+            rating: props.rating || 10.0
 		});
 	};
 
@@ -89,16 +94,12 @@ test.describe("CRUD operations", () => {
 	test("Content was retrieved", async () => {
 		const content = await createContent({title: "Alternate Logan", genres: ["Sci-Fi", "Thriller"]});
 
-		let readContent;
-		if (content.props.contentId)
-			{
-			  readContent = await Content.read(sql, content.props.contentId);
+		const readContent = await Content.read(sql, content.props.contentId);
 			
-			  expect(readContent.props.title).toBe("Alternate Logan");
-			  expect(readContent.props.genres).toBe(["Sci-Fi", "Thriller"]);
-			  expect(readContent.props.rating).toBe(10.0);
-			  expect(readContent.props.type).toBe("movie");
-			}
+		expect(readContent.props.title).toBe("Alternate Logan");
+	  	expect(readContent.props.genres).toBe(["Sci-Fi", "Thriller"]);
+		expect(readContent.props.rating).toBe(10.0);
+		expect(readContent.props.type).toBe("movie");
 	});
 
 	test("Content for a search was retrieved", async () => {
