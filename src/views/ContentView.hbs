@@ -19,17 +19,27 @@
         <p class="infoText">Description: {{#if description}} {{description}} {{else}}N/A{{/if}}</p>
             <div class="buttons">
                 {{#if watched}}
-                    <form method="POST" action="{{ path 'update_rating/' }}{{userId}}?content_id={{ content.props.contentId }}" id="update-rating-form">
+                    <form method="POST" action="{{ path 'update_rating/' }}{{userId}}?content_id={{ content.props.contentId }}" id="update-rating-form" style="display:flex;flex-direction:row;gap:1vw;">
                         <input class="formButton" type="submit" value="Update Rating" id="update-rating-button">
+                        <div class="formItem">
+                            <label class="formText" for="rating">Your Rating /10:</label>
+                            <input class="inputBoxes" type="text" name="rating" required/>
+                        </div>
+                    </form>
+                    <form method="POST" action="{{ path 'remove_watched/' }}{{userId}}?content_id={{ content.props.contentId }}" id="remove-watched-form">
+                        <input class="formButton" type="submit" value="Remove Watched" id="remove-watched-button">
                     </form>
                 {{else}}
                     {{#if toWatch}}
-                        <form method="POST" class="buttons" action="{{ path 'add_watched/' }}{{userId}}?content_id={{ content.props.contentId }}" id="add-watched-form">
+                        <form method="POST" action="{{ path 'add_watched/' }}{{userId}}?content_id={{ content.props.contentId }}" id="add-watched-form" style="display:flex;flex-direction:row;gap:1vw;">
                             <input class="formButton" type="submit" value="Add Watched" id="add-watched-button">
                             <div class="formItem">
                                 <label class="formText" for="rating">Your Rating /10:</label>
                                 <input class="inputBoxes" type="text" name="rating" required/>
                             </div>
+                        </form>
+                        <form method="POST" action="{{ path 'remove_to_watch/' }}{{userId}}?content_id={{ content.props.contentId }}" id="remove-to-watch-form">
+                            <input class="formButton" type="submit" value="Remove To Watch" id="remove-to-watch-button">
                         </form>
                     {{else}}
                         <form method="POST" action="{{ path 'add_to_watch/' }}{{userId}}?content_id={{ content.props.contentId }}" id="add-to-watch-form">

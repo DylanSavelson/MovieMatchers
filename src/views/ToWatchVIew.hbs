@@ -1,10 +1,10 @@
 {{> Header }}
 <div class="contentPage">
     <div style="display:flex; justify-content:center; align-items:center">
-        <img style="width:10vw;height:10vw;" src="{{user.props.profile}}"/>
-        <p class="title">{{user.props.email}}'s</p>
+        <img style="width:5vw;height:5vw;margin-right:1vw;" src="{{user.props.profile}}"/>
+        <p class="title" style="font-size:300%">{{user.props.email}}'s</p>
     </div>
-    <p class="title">To Watch List</p>
+    <p class="title" style="font-size:300%">To Watch List</p>
     <div class="contentButtons">
         {{#if lastProfile}}
             <a class="formButton" href="{{ path 'to_watch/' }}{{ lastProfile }}" id="previous-user-button">Previous User</a>

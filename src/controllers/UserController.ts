@@ -39,9 +39,6 @@ export default class AuthController {
 		router.post("/users/:id/edit", this.updateUserProfile)
 	}
 
-
-
-
 	getRegistrationForm = async (req: Request, res: Response) => {
 		const session = req.getSession();
 		res.setCookie( 
@@ -109,7 +106,7 @@ export default class AuthController {
 			await res.send({
 				statusCode: StatusCode.OK,
 				message: "Successful Login",
-				redirect: "/watched/" + user.props.userId,
+				redirect: "/content",
 			});
 		} catch (error) {
 			if (!email)

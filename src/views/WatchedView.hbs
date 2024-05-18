@@ -1,25 +1,28 @@
 {{> Header }}
 <div class="contentPage">
     <div style="display:flex; justify-content:center; align-items:center">
-        <img style="width:10vw;height:10vw;" src="{{user.props.profile}}"/>
-        <p class="title">{{user.props.email}}'s</p>
+        <img style="width:5vw;height:5vw;margin-right:1vw;" src="{{user.props.profile}}"/>
+        <p class="title" style="font-size:300%">{{user.props.email}}'s</p>
     </div>
-    <p class="title">Watched List</p>
+    <p class="title" style="font-size:300%">Watched List</p>
     <div class="contentButtons">
         {{#if lastProfile}}
-            <a class="formButton" href="{{ path 'to_watch/' }}{{ lastProfile }}" id="previous-user-button">Previous User</a>
+            <a class="formButton" href="{{ path 'watched/' }}{{ lastProfile }}" id="previous-user-button">Previous User</a>
         {{/if}}
         {{#if nextProfile}}
-            <a class="formButton" href="{{ path 'to_watch/' }}{{ nextProfile }}" id="next-user-button">Next User</a>
+            <a class="formButton" href="{{ path 'watched/' }}{{ nextProfile }}" id="next-user-button">Next User</a>
         {{/if}}
     </div>
     <div class="contents">
         {{#each content}}
-            <a href="{{ path 'individual_content?content_id=' }}{{ this.props.contentId }}" class="content">
-                <p class="contentTitle">Your Rating:/10</p>
-                <img class="smallContentPoster" src="{{this.props.contentPoster}}">
-                <p class="contentTitle">{{this.props.title}}</p>
-            </a>
+            <div class="content">
+                <a href="{{ path 'individual_content?content_id=' }}{{ this.props.contentId }}" class="content">
+                    <p class="contentTitle">Your Rating: {{this.props.userRating}}/10</p>
+                    <img class="smallContentPoster" src="{{this.props.contentPoster}}">
+                    <p class="contentTitle">{{this.props.title}}</p>
+                </a>
+                <a class="formButton" href="{{ path 'similar' }}?content_id={{ this.props.contentId }}" id="get-similar-button" style="margin-top:0px;font-size:1rem;width:13rem;height:2rem">Get Similar</a>
+            </div>
         {{/each}}
     </div>
 </div>
