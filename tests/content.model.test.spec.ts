@@ -26,9 +26,9 @@ test.describe("CRUD operations", () => {
 		);
 		
 		
-		DROP TABLE IF EXISTS contents CASCADE;
-		CREATE TABLE contents (
-		  content_id SERIAL PRIMARY KEY,
+		DROP TABLE IF EXISTS users CASCADE;
+		CREATE TABLE users (
+		  user_id SERIAL PRIMARY KEY,
 		  email VARCHAR(100) NOT NULL UNIQUE,
 		  password VARCHAR(255) NOT NULL,
 		  profile TEXT,
@@ -40,17 +40,17 @@ test.describe("CRUD operations", () => {
 		
 		DROP TABLE IF EXISTS watched_content CASCADE;
 		CREATE TABLE watched_content (
-		  content_id INTEGER REFERENCES contents(content_id),
+		  user_id INTEGER REFERENCES users(user_id),
 		  content_id INTEGER REFERENCES content(content_id),
-		  PRIMARY KEY (content_id, content_id),
+		  PRIMARY KEY (user_id, content_id),
 		  rating FLOAT
 		);
 		
 		DROP TABLE IF EXISTS to_watch_content CASCADE;
 		CREATE TABLE to_watch_content (
-		  content_id INTEGER REFERENCES contents(content_id),
+		  user_id INTEGER REFERENCES users(user_id),
 		  content_id INTEGER REFERENCES content(content_id),
-		  PRIMARY KEY (content_id, content_id)
+		  PRIMARY KEY (user_id, content_id)
 		);`);
 	});
 
