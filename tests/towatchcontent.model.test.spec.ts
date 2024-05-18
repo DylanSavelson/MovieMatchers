@@ -75,7 +75,6 @@ test.describe("CRUD operations", () => {
 
 	const createContent = async (props: Partial<ContentProps> = {}) => {
 		return await Content.create(sql, {
-            contentId: props.contentId || 1,
             title: props.title || "Logan",
             description: props.description || "Logan, The Wolverine goes on an adventure with a similar mutant to himself.",
             contentPoster: props.contentPoster || "the poster",
