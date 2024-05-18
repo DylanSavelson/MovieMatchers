@@ -52,11 +52,10 @@
 			<ul id="hamburgerMenu" class="navOptions">
 				<li><button onclick="displayMenu()" id="hamburger"><img src="../../hamburger.png" height="25" width="25" ></button></li>
 				<div id="navMenu">
-					<li><a class="navLink" href="{{ path '' }}">Recommendations</a></li>
 					{{#if sessionCookie}}
 						<li><a class="navLink" href="{{ path 'content' }}">Search</a></li>
 						<li><a class="navLink" href="{{ path 'watched/' }}{{ userId }}">Watched</a></li>
-						<li style="width:6vw"><a class="navLink" href="{{ path 'to_watch/' }}{{ userId }}">To Watch</a></li>
+						<li  style="width: 100%; max-width: 6vw; white-space: nowrap;"><a class="navLink" href="{{ path 'to_watch/' }}{{ userId }}">To Watch</a></li>
 						<li><a class="navLink" href="{{ path 'users/' }}{{ userId }}/edit">Profile</a></li>
 						<li><a class="navLink" href="{{ path 'logout' }}">Logout</a></li>
 					{{else}}

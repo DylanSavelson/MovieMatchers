@@ -68,7 +68,7 @@ export default class Content {
 			let existingContent = null;
 			if (allResponse.data.results[i].poster_path != null)
 			{
-				if (allResponse.data.results[i].title != null)
+				if (allResponse.data.results[i].title != null || allResponse.data.results[i].name != null)
 				{
 					existingContent = await Content.read(sql, allResponse.data.results[i].id);
 					if (allResponse.data.results[i].media_type == "tv")
@@ -90,22 +90,23 @@ export default class Content {
 						}
 						for (let m = 0; m < individualTvResponse.data.seasons.length; m++)
 						{
-							if (individualTvResponse.data.seasons.vote_average != 0)
+							if (individualTvResponse.data.seasons[m].vote_average != 0)
 							{
 								seasons+=1;
-								rating += individualTvResponse.data.seasons.vote_average;
+								rating += individualTvResponse.data.seasons[m].vote_average;
 							}
 						}
+						rating = rating / seasons
 						content = {
 							contentId: allResponse.data.results[i].id,
-							title: allResponse.data.results[i].title,
+							title: allResponse.data.results[i].name,
 							description: allResponse.data.results[i].overview || "N/A", 
 							contentPoster: "https://image.tmdb.org/t/p/original" + allResponse.data.results[i].poster_path,
 							type: allResponse.data.results[i].media_type,
 							createdBy: creators ,
 							releaseDate: individualTvResponse.data.first_air_date,
 							genres: genres,
-							rating: (rating/seasons),
+							rating: rating,
 							seasons: seasons
 						}
 					}
@@ -144,7 +145,6 @@ export default class Content {
 				}
 			}
 		}
-	
 
 		return possibleContent;
 	}

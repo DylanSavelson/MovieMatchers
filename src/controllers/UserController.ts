@@ -109,7 +109,7 @@ export default class AuthController {
 			await res.send({
 				statusCode: StatusCode.OK,
 				message: "Successful Login",
-				redirect: "/watched/" + user.props.userId,
+				redirect: "/content",
 			});
 		} catch (error) {
 			if (!email)

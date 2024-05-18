@@ -16,6 +16,7 @@ import {
 import Content from "../models/Content";
 import ToWatchContent from "../models/ToWatchContent";
 import WatchedContent from "../models/WatchedContent";
+import SimilarContent from "../models/SimilarContent";
 import { c } from "vite/dist/node/types.d-aGj9QkWt";
 
 
@@ -31,7 +32,8 @@ export default class AuthController {
 		router.get("/content", this.getContentForm);
         router.post("/content", this.getSearchedContents);
 		router.get("/individual_content", this.getIndividualContent);
-		router.get("/error",this.getErrorView)
+		router.get("/error",this.getErrorView);
+		router.get("/similar", this.getSimilar);
 		router.get("/to_watch/:id", this.getToWatchPage);
 		router.get("/watched/:id", this.getWatchedPage);
 		router.post("/add_to_watch/:id", this.addToWatch);
@@ -39,8 +41,43 @@ export default class AuthController {
 		router.post("/update_rating/:id", this.updateRating);
 		router.post("/remove_to_watch/:id", this.removeFromToWatch);
 		router.post("/remove_watched/:id", this.removeFromWatched);
-
     }
+	getSimilar = async (req: Request, res: Response) => {
+		const session = req.getSession();
+		res.setCookie( 
+			session.cookie
+		);
+		const contentId = req.getSearchParams().get("content_id");
+		if (contentId)
+		{
+			const similarContent = await SimilarContent.readAll(this.sql, parseInt(contentId));
+			if (similarContent.length > 0)
+				{
+					await res.send({
+						statusCode: StatusCode.OK,
+						message: "Contents",
+						payload: {
+						  sessionCookie: session.get("userId") ? true : false,
+						  userId: session.get("userId"),
+						  content: similarContent           
+					  },
+						template: "SearchedContents",
+					});
+				}
+				else
+				{
+				  await res.send({
+					  statusCode: StatusCode.OK,
+					  message: "Contents",
+					  payload: {
+						sessionCookie: session.get("userId") ? true : false,
+						userId: session.get("userId")
+					  },
+					  redirect: "/content?error=No similar content found",
+				  });
+				}
+		}
+	}
 	removeFromToWatch = async (req: Request, res: Response) => {
 		const session = req.getSession();
 		res.setCookie( 
