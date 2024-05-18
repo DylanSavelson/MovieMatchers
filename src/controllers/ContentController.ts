@@ -35,6 +35,7 @@ export default class AuthController {
 		router.get("/to_watch/:id", this.getToWatchPage);
 		router.get("/watched/:id", this.getWatchedPage);
 		router.post("/add_to_watch/:id", this.addToWatch);
+		router.post("/add_watched/:id", this.addWatched)
     }
 	getErrorView = async (req: Request, res: Response) => {
 		await res.send({
@@ -47,6 +48,44 @@ export default class AuthController {
 		});
 	}
 	
+	addWatched = async (req: Request, res: Response) => {
+		const rating = req.body.rating
+		const session = req.getSession();
+		res.setCookie( 
+			session.cookie
+		);
+		const contentId = req.getSearchParams().get("content_id")
+		const userId = session.get("userId")
+		if (rating > 10)
+		{
+			res.send({
+				statusCode: StatusCode.BadRequest,
+				message: "Max rating is 10",
+				redirect: `/individual_content?content_id=${contentId}&error=Max rating is 10`
+			})
+			return
+		}
+
+		if (rating < 0)
+		{
+			res.send({
+				statusCode: StatusCode.BadRequest,
+				message: "Min rating is 0",
+				redirect: `/individual_content?content_id=${contentId}&error=Min rating is 0`
+			})
+			return
+		}
+		if (contentId)
+		{
+			await WatchedContent.add(this.sql,parseInt(contentId), userId, rating)
+			await res.send({
+				statusCode: StatusCode.OK,
+				message: "User watched page",		
+				redirect: `/watched/${userId}?user=${userId}`,
+			});
+		}
+
+	}
 	addToWatch = async (req: Request, res: Response) => {
 		const session = req.getSession();
 		res.setCookie( 
@@ -73,37 +112,40 @@ export default class AuthController {
 		if(req.session.get("userId"))
 		{	
 			const url = req.getURL();
-			let profileId = url.toString().split('/')[4].split('?')[0];
-			const user = req.getSearchParams().get("user");
+			let profileId = url.toString().split('/')[4];
 			const content = await ToWatchContent.readAll(this.sql, parseInt(profileId))
 			let nextUser;
 			let lastUser;
-			let nextProfileId = parseInt(profileId) + 1;
-			let lastProfileId = parseInt(profileId) - 1;
+			let nextProfileId : number | null = parseInt(profileId) + 1;
+			let lastProfileId : number | null = parseInt(profileId) - 1;
 			while (true)
 			{
 				nextUser = await User.read(this.sql, nextProfileId)
-				if (nextUser.props.visibility)
+				if (nextUser.props.visibility || nextUser.props.userId == req.session.get("userId"))
 					break
 				nextProfileId++;
-				if (!nextUser)
-					nextUser = null;
+				if (!nextUser.props.userId)
+				{
+					nextProfileId = null;
 					break
+				}
 
 			}
 			while (true)
 			{
 				lastUser = await User.read(this.sql, lastProfileId)
-				if (lastUser.props.visibility)
+				if (lastUser.props.visibility || lastUser.props.userId == req.session.get("userId"))
 					break
 				lastProfileId--;
-				if (!lastUser)
-					lastUser = null;
+				if (!lastUser.props.userId )
+				{
+					lastProfileId = null;
 					break
+				}
 
 			}
 			let userProfile = await User.read(this.sql, parseInt(profileId));
-			if (profileId == user)
+			if (profileId == req.session.get("userId"))
 			{
 				await res.send({
 					statusCode: StatusCode.OK,
@@ -112,7 +154,7 @@ export default class AuthController {
 						sessionCookie: session.get("userId") ? true : false,
 						userId: session.get("userId"),
 						content: content,
-						user: userProfile.props.email,
+						user: userProfile,
 						lastProfile: lastProfileId,
 						nextProfile: nextProfileId
 					},
@@ -134,7 +176,7 @@ export default class AuthController {
 							sessionCookie: session.get("userId") ? true : false,
 							userId: session.get("userId"),
 							content: content,
-							user: userProfile.props.email,
+							user: userProfile,
 							lastProfile: lastProfileId,
 							nextProfile: nextProfileId
 						},
@@ -166,16 +208,99 @@ export default class AuthController {
 		res.setCookie( 
 			session.cookie
 		  );
-		await res.send({
-			statusCode: StatusCode.OK,
-			message: "Watched content page",
-			//get watched content and send here
-			payload: {
-				sessionCookie: session.get("userId") ? true : false,
-				userId: session.get("userId")
-			},
-			template: "WatchedView",
-		});
+		if(req.session.get("userId"))
+		{	
+			const url = req.getURL();
+			let profileId = url.toString().split('/')[4];
+			const content = await WatchedContent.readAll(this.sql, parseInt(profileId))
+			let nextUser;
+			let lastUser;
+			let nextProfileId : number | null = parseInt(profileId) + 1;
+			let lastProfileId : number | null = parseInt(profileId) - 1;
+			while (true)
+			{
+				nextUser = await User.read(this.sql, nextProfileId)
+				if (nextUser.props.visibility || nextUser.props.userId == req.session.get("userId"))
+					break
+				nextProfileId++;
+				if (!nextUser.props.userId)
+				{
+					nextProfileId = null;
+					break
+				}
+
+			}
+			while (true)
+			{
+				lastUser = await User.read(this.sql, lastProfileId)
+				if (lastUser.props.visibility || lastUser.props.userId == req.session.get("userId"))
+					break
+				lastProfileId--;
+				if (!lastUser.props.userId )
+				{
+					lastProfileId = null;
+					break
+				}
+
+			}
+			let userProfile = await User.read(this.sql, parseInt(profileId));
+			if (profileId == req.session.get("userId"))
+			{
+				await res.send({
+					statusCode: StatusCode.OK,
+					message: "Watched List",
+					payload: {
+						sessionCookie: session.get("userId") ? true : false,
+						userId: session.get("userId"),
+						content: content,
+						user: userProfile,
+						lastProfile: lastProfileId,
+						nextProfile: nextProfileId
+					},
+					template: "WatchedView",
+				});
+			}
+			else
+			{
+				const url = req.getURL();
+				let profileId = url.toString().split('/')[4].split('?')[0];
+				let userProfile = await User.read(this.sql, parseInt(profileId));
+				if (userProfile.props.visibility)
+				{
+					const content = await WatchedContent.readAll(this.sql, parseInt(profileId))
+					await res.send({
+						statusCode: StatusCode.OK,
+						message: "Watched List",
+						payload: {
+							sessionCookie: session.get("userId") ? true : false,
+							userId: session.get("userId"),
+							content: content,
+							user: userProfile,
+							lastProfile: lastProfileId,
+							nextProfile: nextProfileId
+						},
+						template: "WatchedView",
+					});
+				}
+				else
+				{
+					await res.send({
+						statusCode: StatusCode.Forbidden,
+						message: "not authenticated",
+						redirect: "/error?error=Profile is private",
+					});
+				}
+			}
+		}
+		else
+		{
+			await res.send({
+				statusCode: StatusCode.Forbidden,
+				message: "not authenticated",
+				redirect: "/login",
+			});
+		}
+
 	}
 
 	getIndividualContent= async (req: Request, res: Response) => 

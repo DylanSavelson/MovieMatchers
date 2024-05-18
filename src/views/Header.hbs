@@ -54,9 +54,9 @@
 				<div id="navMenu">
 					<li><a class="navLink" href="{{ path '' }}">Recommendations</a></li>
 					{{#if sessionCookie}}
-						<li><a class="navLink" href="{{ path 'content' }}">Add</a></li>
+						<li><a class="navLink" href="{{ path 'content' }}">Search</a></li>
 						<li><a class="navLink" href="{{ path 'watched/' }}{{ userId }}">Watched</a></li>
-						<li><a class="navLink" href="{{ path 'to_watch/' }}{{ userId }}?user={{ userId }}">To Watch</a></li>
+						<li style="width:6vw"><a class="navLink" href="{{ path 'to_watch/' }}{{ userId }}">To Watch</a></li>
 						<li><a class="navLink" href="{{ path 'users/' }}{{ userId }}/edit">Profile</a></li>
 						<li><a class="navLink" href="{{ path 'logout' }}">Logout</a></li>
 					{{else}}
