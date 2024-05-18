@@ -52,24 +52,18 @@ export default class WatchedContent{
     {
         const connection = await sql.reserve();
 		const rows = await connection<ContentProps[]>`
-			SELECT *
-			FROM watched_content
-			where user_id = ${userId}
+            SELECT wc.user_id, wc.content_id, wc.rating AS user_rating, c.title, c.description, c.content_poster, c.type, c.created_by, c.release_date, c.genres, c.rating AS content_rating, c.seasons
+            FROM watched_content wc
+            JOIN content c
+            ON wc.content_id = c.content_id
+            WHERE wc.user_id = ${userId}
 		`;
         await connection.release();
-        let new_rows  = rows.map(
+        return rows.map(
 			(row) =>
-				convertToCase(snakeToCamel, row),)
-
-        let content = [];
-        for (let i = 0; i < rows.length; i ++)
-        {
-            content[i] = await Content.read(sql, new_rows[i].contentId);
-            content[i].props.userRating = new_rows[i].rating
-        }
+				new Content(sql,convertToCase(snakeToCamel, row) as ContentProps),);
 
 
-		return content;
     }
     static async read(sql: postgres.Sql<any>, userId: number, contentId: number)
     {
