@@ -17,27 +17,22 @@ export default class ToWatchContent{
     static async add(sql: postgres.Sql<any>, contentId: number, userId: number){
         const connection = await sql.reserve();
 
-        const [row] = await connection`
+        await connection`
             INSERT INTO to_watch_content
             (user_id, content_id) VALUES (${userId}, ${contentId})
         `;
-        
         connection.release();
-        
-        return new Content(sql, convertToCase(snakeToCamel, row) as ContentProps);
     }
 
     static async remove(sql: postgres.Sql<any>, contentId: number, userId: number){
         const connection = await sql.reserve();
 
-        const [row] = await connection`
+        await connection`
             DELETE FROM to_watch_content
             WHERE content_id = ${contentId} and user_id = ${userId}
         `;
 
         await connection.release();
-
-        return new Content(sql, convertToCase(snakeToCamel, row) as ContentProps);
     }
 
     static async readAll(sql: postgres.Sql<any>, userId: number): Promise<Content[]>
