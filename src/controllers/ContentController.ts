@@ -457,33 +457,44 @@ export default class AuthController {
 		res.setCookie( 
 			session.cookie
 		  );
-          const new_content = await Content.readAll(this.sql, req.body.content)
+		if(req.session.get("userId"))
+		{	
+			const new_content = await Content.readAll(this.sql, req.body.content)
 
-          if (new_content.length > 0)
-          {
-              await res.send({
-                  statusCode: StatusCode.OK,
-                  message: "Contents",
-                  payload: {
-                    sessionCookie: session.get("userId") ? true : false,
-                    userId: session.get("userId"),
-                    content: new_content           
-			    },
-                  template: "SearchedContents",
-              });
-          }
-		  else
-		  {
+			if (new_content.length > 0)
+			{
+				await res.send({
+					statusCode: StatusCode.OK,
+					message: "Contents",
+					payload: {
+					sessionCookie: session.get("userId") ? true : false,
+					userId: session.get("userId"),
+					content: new_content           
+				},
+					template: "SearchedContents",
+				});
+			}
+			else
+			{
 			await res.send({
 				statusCode: StatusCode.OK,
 				message: "Contents",
 				payload: {
-				  sessionCookie: session.get("userId") ? true : false,
-				  userId: session.get("userId")
+					sessionCookie: session.get("userId") ? true : false,
+					userId: session.get("userId")
 				},
 				redirect: "/content?error=No found content",
 			});
-		  }
+			}
+		}
+		else
+		{
+			await res.send({
+				statusCode: StatusCode.Forbidden,
+				message: "not authenticated",
+				redirect: "/login",
+			});
+		}
     }
 
 	getContentForm = async (req: Request, res: Response) => 

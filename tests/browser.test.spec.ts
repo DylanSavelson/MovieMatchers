@@ -107,19 +107,33 @@ test.afterEach(async ({ page }) => {
 
 test("Homepage was retrieved successfully", async ({ page }) => {
 	await page.goto("/");
-
-	expect(await page?.title()).toBe("My App");
+  const titleElement = await page.$("#title");
+  const sloganElement = await page.$("#slogan");
+  
+	expect(await titleElement?.innerText()).toBe("movie matchers");
+  expect(await sloganElement?.innerText()).toBe("THE BEST PLACE TO TRACK AND PICK MOVIES AND TV");
 });
 
 test.only("Content retrieved successfully.", async ({ page }) => {
 	await login(page); 
 	const content = await createContent();
 
-	await page.goto(`/individual_content`);
+	await page.goto(`/content`);
+  const titleElement = await page.$("#title");
 
-	const titleElement = await page.$("#title");
+	expect(await titleElement?.innerText()).toMatch("Movie/TV name");
 
-	expect(await titleElement?.innerText()).toBe(content.props.title);
+	await page.fill('form#content-form input[name="content"]', content.props.title);
+
+	await page.click("content-form #content-form-submit-button");
+
+	expect(await page?.url()).toBe(getPath(`content`));
+
+  await page.click("#263115");
+  
+  const descriptionElement = await page.$("#description")
+	expect(await descriptionElement?.innerText()).toMatch("In the near future, a weary Logan cares for an ailing Professor X in a hideout on the Mexican border. But Logan's attempts to hide from the world and his legacy are upended when a young mutant arrives, pursued by dark forces.");
+
 });
 
 test("Content was retrieved.", async ({ page }) => {

@@ -178,7 +178,7 @@ export default class AuthController {
 					userProps.visibility = false
 
 				}
-				else
+				else if (req.body.profileVisibility == "on" && user.props.visibility == false)
 				{
 					userProps.visibility = true
 				}

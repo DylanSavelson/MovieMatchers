@@ -2,7 +2,7 @@
 
 
 <div class="contentPage">
-    <div><p class="title">{{content.props.title}}</p></div>
+    <div><p id="title" class="title">{{content.props.title}}</p></div>
     <p class="title" style="font-size: 300%" id="error">{{ error }} </p>
     <div class="posterAndInfo">
         <img class="bigContentPoster" src="{{content.props.contentPoster}}">
@@ -16,7 +16,7 @@
         {{else}}
         <p class="infoText">Seasons: N/A</p>
         {{/if}}
-        <p class="infoText">Description: {{#if description}} {{description}} {{else}}N/A{{/if}}</p>
+        <p id="description" class="infoText">Description: {{#if description}} {{description}} {{else}}N/A{{/if}}</p>
             <div class="buttons">
                 {{#if watched}}
                     <form method="POST" action="{{ path 'update_rating/' }}{{userId}}?content_id={{ content.props.contentId }}" id="update-rating-form" style="display:flex;flex-direction:row;gap:1vw;">
