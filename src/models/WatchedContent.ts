@@ -9,7 +9,7 @@ import axios from "axios";
 import { ContentProps } from "./Content";
 import Content from "./Content"
 
-export default class ToWatchContent{
+export default class WatchedContent{
     constructor(
         private sql: postgres.Sql<any>,
     ){}
