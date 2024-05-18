@@ -85,7 +85,7 @@ test.describe("CRUD operations", () => {
 
 	test("content was created.", async () => {
 		const content = await createContent({});
-
+        
 		expect(content.props).toBe("");
 		expect(content.props).toBe("");
 		expect(content.props).toBeTruthy();

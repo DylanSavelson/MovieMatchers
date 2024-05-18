@@ -17,35 +17,41 @@ export default class WatchedContent{
     static async add(sql: postgres.Sql<any>, contentId: number, userId: number, rating: number){
         const connection = await sql.reserve();
 
-        await connection`
+        const [row] = await connection`
             INSERT INTO watched_content
             (user_id, content_id, rating) VALUES (${userId}, ${contentId}, ${rating})
         `;
         
         connection.release();
+
+        return new Content(sql, convertToCase(snakeToCamel, row) as ContentProps);
     }
 
     static async update(sql: postgres.Sql<any>, contentId: number, newRating: number){
         const connection = await sql.reserve();
 
-        await connection`
+        const [row] = await connection`
             UPDATE watched_content
             SET (rating) = ${newRating}
             WHERE content_id = ${contentId}
         `;
 
         await connection.release();
+
+        return new Content(sql, convertToCase(snakeToCamel, row) as ContentProps);
     }
 
     static async remove(sql: postgres.Sql<any>, contentId: number){
         const connection = await sql.reserve();
 
-        await connection`
+        const [row] = await connection`
             DELETE FROM watched_content
             WHERE content_id = ${contentId}
         `;
 
         await connection.release();
+
+        return new Content(sql, convertToCase(snakeToCamel, row) as ContentProps);
     }
 
     static async readAll(sql: postgres.Sql<any>, userId: number): Promise<Content[]>

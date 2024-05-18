@@ -2,7 +2,10 @@ import postgres from "postgres";
 import { test, expect, Page } from "@playwright/test";
 import Content from "../src/models/Content"
 import { ContentProps } from "../src/models/Content";
-import ToWatchContent from "../src/models/ToWatchContent"
+import ToWatchContent from "../src/models/ToWatchContent";
+import { UserProps } from "../src/models/User"
+import User from "../src/models/User"
+import { createUTCDate } from "../src/utils";
 
 
 test.describe("CRUD operations", () => {
@@ -84,23 +87,40 @@ test.describe("CRUD operations", () => {
 		});
 	};
 
-	test("content was created.", async () => {
+	const createUser = async (props: Partial<UserProps> = {}) => {
+		return await User.create(sql, {
+			email: props.email || "user@email.com",
+			password: props.password || "password",
+			createdAt: props.createdAt || createUTCDate(),
+			visibility: true
+		});
+	};
+
+	test("content was added to database.", async () => {
 		const content = await createContent({});
+        const user = await createUser({});
+        const toWatchContent = await ToWatchContent.add(sql, content.props.contentId, user.props.userId);
 
-		expect(content.props).toBe("");
-		expect(content.props).toBe("");
-		expect(content.props).toBeTruthy();
-		expect(content.props).toBeFalsy();
+		expect().toBe("");
+		expect().toBe("");
 	});
 
 	test("Content ", async () => {
-		await createContent({  });
+		const content = await createContent({});
+        const user = await createUser({});
+        const toWatchContent = await ToWatchContent.add();
 
+		expect().toBe("");
+		expect().toBe("");
 	});
 
 	test("Content ", async () => {
-		const content = await createContent({  });
+		const content = await createContent({});
+        const user = await createUser({});
+        const toWatchContent = await ToWatchContent.add();
 
+		expect().toBe("");
+		expect().toBe("");
 	});
 
 	test("Content ", async () => {

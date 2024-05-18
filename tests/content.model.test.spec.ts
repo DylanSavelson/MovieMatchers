@@ -83,37 +83,30 @@ test.describe("CRUD operations", () => {
 	};
 
 	test("content was created.", async () => {
-		const content = await createContent({});
+		const content = await createContent({ title: "Alternate Logan", genres: ["Sci-Fi", "Thriller"]});
 
-		expect(content.props).toBe("");
-		expect(content.props).toBe("");
-		expect(content.props).toBeTruthy();
-		expect(content.props).toBeFalsy();
+		expect(content.props.title).toBe("Alternate Logan");
+		expect(content.props.genres).toBe(["Sci-Fi", "Thriller"]);
+		expect(content.props.rating).toBe(10.0);
+		expect(content.props.type).toBe("movie");
 	});
 
-	test("Content ", async () => {
-		await createContent({  });
+	test("Content was retrieved", async () => {
+		const content = await createContent({title: "Alternate Logan", genres: ["Sci-Fi", "Thriller"]});
 
+        const readContent = await Content.read(sql, content.props.contentId);
+
+        expect(readContent.props.title).toBe("Alternate Logan");
+		expect(readContent.props.genres).toBe(["Sci-Fi", "Thriller"]);
+		expect(readContent.props.rating).toBe(10.0);
+		expect(readContent.props.type).toBe("movie");
 	});
 
-	test("Content ", async () => {
+	test("Content for a search was retrieved", async () => {
 		const content = await createContent({  });
 
-	});
+        const allReadContent = await Content.readAll(sql, "Shrek");
 
-	test("Content ", async () => {
-		const content = await createContent({  });
-
-	});
-
-	test("Content ", async () => {
-		const content = await createContent({  });
-
-	});
-
-	test("Content ", async () => {
-		const content = await createContent({  });
-
-
+        expect(allReadContent.length).toBeGreaterThan(1);
 	});
 });
