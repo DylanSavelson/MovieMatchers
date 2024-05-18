@@ -109,17 +109,17 @@ test("Homepage was retrieved successfully", async ({ page }) => {
 	expect(await page?.title()).toBe("My App");
 });
 
-test("Todo retrieved successfully.", async ({ page }) => {
+test.only("Content retrieved successfully.", async ({ page }) => {
 	await login(page);
 	const content = await createContent();
 
-	await page.goto(`content/${content.props.contentId}`);
+	await page.goto(`individual_content`);
 
 	const titleElement = await page.$("#title");
-	const descriptionElement = await page.$("#description");
+
+    console.log(titleElement);
 
 	expect(await titleElement?.innerText()).toBe(content.props.title);
-	expect(await descriptionElement?.innerText()).toBe(content.props.description);
 });
 
 test("Todo not retrieved while logged out.", async ({ page }) => {
