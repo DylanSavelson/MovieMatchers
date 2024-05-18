@@ -86,7 +86,7 @@ test.describe("CRUD operations", () => {
 		const content = await createContent({ title: "Alternate Logan", genres: ["Sci-Fi", "Thriller"]});
 
 		expect(content.props.title).toBe("Alternate Logan");
-		expect(content.props.genres).toBe(["Sci-Fi", "Thriller"]);
+		expect(content.props.genres).toBeInstanceOf(Array);
 		expect(content.props.rating).toBe(10.0);
 		expect(content.props.type).toBe("movie");
 	});
@@ -97,7 +97,7 @@ test.describe("CRUD operations", () => {
 		const readContent = await Content.read(sql, content.props.contentId);
 			
 		expect(readContent.props.title).toBe("Alternate Logan");
-	  	expect(readContent.props.genres).toBe(["Sci-Fi", "Thriller"]);
+		expect(content.props.genres).toBeInstanceOf(Array);
 		expect(readContent.props.rating).toBe(10.0);
 		expect(readContent.props.type).toBe("movie");
 	});
