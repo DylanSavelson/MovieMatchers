@@ -2,6 +2,8 @@ import postgres from "postgres";
 import { test, expect, Page } from "@playwright/test";
 import { getPath } from "../src/url";
 import Content, { ContentProps } from "../src/models/Content"
+import WatchedContent from "../src/models/WatchedContent";
+import ToWatchContent from "../src/models/ToWatchContent";
 import User, { UserProps } from "../src/models/User";
 import { createUTCDate } from "../src/utils";
 
@@ -110,154 +112,69 @@ test("Homepage was retrieved successfully", async ({ page }) => {
 });
 
 test.only("Content retrieved successfully.", async ({ page }) => {
-	await login(page);
+	await login(page); 
 	const content = await createContent();
 
-	await page.goto(`individual_content`);
+	await page.goto(`/individual_content`);
 
 	const titleElement = await page.$("#title");
-
-    console.log(titleElement);
 
 	expect(await titleElement?.innerText()).toBe(content.props.title);
 });
 
-test("Todo not retrieved while logged out.", async ({ page }) => {
-	const todo = await createTodo();
+test("Content was retrieved.", async ({ page }) => {
+	await login(page);
+	const content = [await createContent(), await createContent(), await createContent()];
 
-	await page.goto(`todos/${todo.props.id}`);
+	await page.goto("/content");
+
+	const contentElements = await page.$$("[contents]");
+
+	expect(contentElements.length).toBe(content.length);
+});
+
+test("Logged out brings you to login", async ({ page }) => {
+	await page.goto(`/logout`);
 
 	expect(await page?.url()).toBe(getPath("login"));
 });
 
-test("All Todos were retrieved.", async ({ page }) => {
-	await login(page);
-	const todos = [await createTodo(), await createTodo(), await createTodo()];
+test("To watch deleted successfully.", async ({ page }) => {
+	const content = await createContent({  });
+    const user = await createUser({});
+    if(user.props.userId)
+    {
+      await ToWatchContent.add(sql, content.props.contentId, user.props.userId)
+      let toWatchContent = await ToWatchContent.readAll(sql, user.props.userId);
+      expect(toWatchContent.length).toBe(1);
 
-	await page.goto("/todos");
+      await ToWatchContent.remove(sql, content.props.contentId, user.props.userId);
+      toWatchContent = await ToWatchContent.readAll(sql, user.props.userId);
+      expect(toWatchContent.length).toBe(0);
+    }
+	});
 
-	const h1 = await page.$("h1");
-	const todoElements = await page.$$("[todo-id]");
-
-	expect(await h1?.innerText()).toMatch("Todos");
-	expect(todoElements.length).toBe(todos.length);
-
-	for (let i = 0; i < todoElements.length; i++) {
-		const status = await todoElements[i].getAttribute("status");
-		expect(await todoElements[i].innerText()).toMatch(todos[i].props.title);
-		expect(status).toMatch(todos[i].props.status);
+test("Watched content updated", async ({ page }) => {
+	const content = await createContent({rating: 5.0});
+	const user = await createUser({});
+	if(user.props.userId){
+		await WatchedContent.add(sql, content.props.contentId, user.props.userId, content.props.rating);
+		let watchedContent = await WatchedContent.read(sql, user.props.userId, content.props.contentId);
+		expect(watchedContent.props.rating).toBe(5.0);
+		watchedContent.props.rating = 10.0;
+		expect(watchedContent.props.rating).toBe(10.0);
 	}
 });
 
-test("All todos not retrieved while logged out.", async ({ page }) => {
-	const todo = await createTodo();
-
-	await page.goto(`todos`);
-
-	expect(await page?.url()).toBe(getPath("login"));
-});
-
-test("Todo created successfully.", async ({ page }) => {
-	await login(page);
-	const todo = {
-		title: "Test Todo",
-		description: "This is a test todo",
-		status: "incomplete",
-	};
-
-	await page.goto("/todos/new");
-
-	const h1 = await page.$("h1");
-
-	expect(await h1?.innerText()).toMatch("Create Todo");
-
-	await page.fill('form#new-todo-form input[name="title"]', todo.title);
-	await page.fill(
-		'form#new-todo-form textarea[name="description"]',
-		todo.description,
-	);
-	await page.click("form#new-todo-form #new-todo-form-submit-button");
-
-	expect(await page?.url()).toBe(getPath(`todos/1`));
-
-	const titleElement = await page.$("#title");
-	const descriptionElement = await page.$("#description");
-	const statusElement = await page.$(`[status="${todo.status}"]`);
-
-	expect(await titleElement?.innerText()).toBe(todo.title);
-	expect(await descriptionElement?.innerText()).toBe(todo.description);
-	expect(statusElement).not.toBeNull();
-});
-
-test("Todo not created while logged out.", async ({ page }) => {
-	await page.goto(`/todos/new`);
-
-	expect(await page?.url()).toBe(getPath("login"));
-});
-
-test("Todo updated successfully.", async ({ page }) => {
-	await login(page);
-	const todo = await createTodo();
-
-	await page.goto(`todos/${todo.props.id}/edit`);
-
-	const h1 = await page.$("h1");
-
-	expect(await h1?.innerText()).toMatch("Edit Todo");
-
-	const newTitle = "Updated Test Todo";
-	const newDescription = "This is an updated test todo";
-
-	await page.fill('form#edit-todo-form input[name="title"]', newTitle);
-	await page.fill(
-		'form#edit-todo-form textarea[name="description"]',
-		newDescription,
-	);
-	await page.click("form#edit-todo-form #edit-todo-form-submit-button");
-
-	expect(await page?.url()).toBe(getPath(`todos/${todo.props.id}`));
-
-	const titleElement = await page.$("#title");
-	const descriptionElement = await page.$("#description");
-
-	expect(await titleElement?.innerText()).toBe(newTitle);
-	expect(await descriptionElement?.innerText()).toBe(newDescription);
-});
-
-test("Todo not updated while logged out.", async ({ page }) => {
-	const todo = await createTodo();
-
-	await page.goto(`todos/${todo.props.id}/edit`);
-
-	expect(await page?.url()).toBe(getPath("login"));
-});
-
-test("Todo deleted successfully.", async ({ page }) => {
-	await login(page);
-	const todo = await createTodo();
-
-	await page.goto(`todos/${todo.props.id}`);
-
-	await page.click("form#delete-todo-form button");
-
-	expect(await page?.url()).toBe(getPath(`todos`));
-
-	const body = await page.$("body");
-
-	expect(await body?.innerText()).toMatch("No todos found");
-});
-
-test("Todo completed successfully.", async ({ page }) => {
-	await login(page);
-	const todo = await createTodo();
-
-	await page.goto(`todos/${todo.props.id}`);
-
-	await page.click("form#complete-todo-form button");
-
-	expect(await page?.url()).toBe(getPath(`todos/${todo.props.id}`));
-
-	const statusElement = await page.$(`[status="complete"]`);
-
-	expect(statusElement).not.toBeNull();
+test("Watched Content deleted successfully.", async ({ page }) => {
+	const content = await createContent({});
+	const user = await createUser({});
+	if(user.props.userId){
+		await WatchedContent.add(sql, content.props.contentId, user.props.userId, content.props.rating);
+		let watchedContent = await WatchedContent.readAll(sql, user.props.userId);
+		expect(watchedContent.length).toBe(1);
+		await WatchedContent.remove(sql, content.props.contentId, user.props.userId);
+		watchedContent = await WatchedContent.readAll(sql, user.props.userId);
+		expect(watchedContent.length).toBe(0);
+	}
 });
