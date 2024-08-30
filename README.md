@@ -1,5 +1,5 @@
 **Introduction** <br/>
-Introducing “Movie Matcher” - an application where you can track movies or tv shows you’ve watched, rate them after watching and we will recommend other movies/shows based on what you have watched. You can also connect with other people who have similar taste in movies.
+Introducing “Movie Matchers” - an application where you can track movies or tv shows you’ve watched, rate them after watching and we will recommend other movies/shows based on what you have watched. You can also connect with other people who have similar taste in movies.
 
 This app is for:<br/>
 * People who are interested in remembering and rating what movies/shows they’ve watched.
